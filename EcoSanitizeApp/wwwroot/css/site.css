@@ -1,0 +1,473 @@
+/* =========================================================================
+   EcoSanitize: Municipal Operations Portal Stylesheet
+   ========================================================================= */
+
+:root {
+    --bg-page: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --border-color: #cbd5e1;
+    --border-subtle: #e2e8f0;
+
+    --brand-dark: #0f172a;
+    --brand-green: #059669;
+    --brand-forest: #047857;
+
+    --color-organic: #15803d;
+    --color-organic-bg: #dcfce7;
+    --color-organic-border: #86efac;
+
+    --color-recyclable: #1d4ed8;
+    --color-recyclable-bg: #dbeafe;
+    --color-recyclable-border: #93c5fd;
+
+    --color-hazardous: #b91c1c;
+    --color-hazardous-bg: #fee2e2;
+    --color-hazardous-border: #fca5a5;
+
+    --color-sanitary: #b45309;
+    --color-sanitary-bg: #fef3c7;
+    --color-sanitary-border: #fde68a;
+}
+
+body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    padding-bottom: 60px;
+}
+
+/* Navbar */
+.navbar-custom {
+    background-color: #0f172a;
+    border-bottom: 1px solid #1e293b;
+    padding: 0.75rem 1rem;
+}
+
+.navbar-brand-custom {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #10b981 !important;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.nav-link-item {
+    color: #cbd5e1 !important;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.45rem 0.85rem !important;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.nav-link-item:hover {
+    color: #ffffff !important;
+    background-color: #1e293b;
+}
+
+.nav-link-item.active {
+    color: #ffffff !important;
+    background-color: #1e293b;
+}
+
+/* Hero Section (Matching Image 1) */
+.hero-banner-custom {
+    background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 2.25rem;
+    box-shadow: 0 4px 12px rgba(6, 95, 70, 0.2);
+    border: none;
+    margin-bottom: 1.75rem;
+}
+
+.hero-pill-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-bottom: 0.35rem;
+}
+
+.hero-subtitle {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.5rem;
+}
+
+/* Action Buttons inside Hero */
+.btn-hero-yellow {
+    background-color: #fbbf24;
+    color: #78350f;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.6rem 1.25rem;
+    border-radius: 6px;
+    border: 1px solid #f59e0b;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.15s ease;
+}
+
+.btn-hero-yellow:hover {
+    background-color: #f59e0b;
+    color: #451a03;
+}
+
+.btn-hero-outline {
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.6rem 1.25rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.15s ease;
+}
+
+.btn-hero-outline:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* Hero Right White Stat Card (Matching Image 1) */
+.hero-stat-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.hero-stat-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
+    margin-bottom: 0.35rem;
+}
+
+.hero-stat-value {
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: #059669;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+}
+
+.hero-stat-unit {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* 3 Dashboard Metric Tiles (Matching Image 1) */
+.metric-tile-card {
+    background-color: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.metric-tile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.metric-tile-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+}
+
+.metric-tile-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0.25rem 0 0.75rem 0;
+}
+
+.metric-tile-icon {
+    font-size: 2rem;
+    opacity: 0.3;
+}
+
+.btn-metric-link {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    border: 1px solid var(--border-color);
+    background-color: #ffffff;
+    transition: all 0.15s ease;
+}
+
+.btn-metric-link:hover {
+    background-color: #f8fafc;
+}
+
+/* Core Buttons */
+.btn-app-primary {
+    background-color: #059669;
+    border: 1px solid #047857;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-app-primary:hover {
+    background-color: #047857;
+    color: #ffffff;
+}
+
+.btn-app-secondary {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-app-secondary:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+
+/* Panels */
+.panel-card {
+    background-color: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.panel-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.85rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.panel-body {
+    padding: 1.25rem;
+}
+
+/* =========================================================================
+   FIXED PROFESSIONAL BADGES (Eliminating the AI look from Image 2)
+   Every badge enforces white-space: nowrap so "Action Required" never wraps
+   ========================================================================= */
+
+.badge-stream,
+.badge-status,
+.badge-followup,
+.badge-priority {
+    white-space: nowrap !important;
+    display: inline-block !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    padding: 0.35rem 0.75rem !important;
+    border-radius: 4px !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+}
+
+/* Segregation Streams */
+.badge-stream-organic {
+    background-color: var(--color-organic-bg) !important;
+    color: var(--color-organic) !important;
+    border: 1px solid var(--color-organic-border) !important;
+}
+
+.badge-stream-recyclable {
+    background-color: var(--color-recyclable-bg) !important;
+    color: var(--color-recyclable) !important;
+    border: 1px solid var(--color-recyclable-border) !important;
+}
+
+.badge-stream-hazardous {
+    background-color: var(--color-hazardous-bg) !important;
+    color: var(--color-hazardous) !important;
+    border: 1px solid var(--color-hazardous-border) !important;
+}
+
+.badge-stream-sanitary {
+    background-color: var(--color-sanitary-bg) !important;
+    color: var(--color-sanitary) !important;
+    border: 1px solid var(--color-sanitary-border) !important;
+}
+
+/* Sanitization Follow-Up Badges (Fixing Image 2) */
+.badge-followup-compliant {
+    background-color: #dcfce7 !important;
+    color: #15803d !important;
+    border: 1px solid #86efac !important;
+}
+
+.badge-followup-action {
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
+    border: 1px solid #fca5a5 !important;
+}
+
+/* Sanitization Outcome Badges (Fixing Image 2) */
+.badge-outcome-pass {
+    background-color: #047857 !important;
+    color: #ffffff !important;
+    border: 1px solid #065f46 !important;
+}
+
+.badge-outcome-attention {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    border: 1px solid #b91c1c !important;
+}
+
+/* Disposal Status Badges */
+.badge-status-pending {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+    border: 1px solid #fde68a !important;
+}
+
+.badge-status-transit {
+    background-color: #dbeafe !important;
+    color: #1e40af !important;
+    border: 1px solid #93c5fd !important;
+}
+
+.badge-status-disposed {
+    background-color: #dcfce7 !important;
+    color: #15803d !important;
+    border: 1px solid #86efac !important;
+}
+
+/* Priority Badges */
+.badge-priority-emergency {
+    background-color: #7f1d1d !important;
+    color: #ffffff !important;
+    border: 1px solid #991b1b !important;
+}
+
+.badge-priority-high {
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
+    border: 1px solid #fca5a5 !important;
+}
+
+.badge-priority-medium {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+.badge-priority-low {
+    background-color: #f8fafc !important;
+    color: #64748b !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+/* Clean Tables */
+.table-portal {
+    background-color: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.table-portal th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    border-top: none;
+}
+
+.table-portal td {
+    padding: 0.85rem 1rem;
+    vertical-align: middle;
+    border-top: 1px solid #f1f5f9;
+    font-size: 0.875rem;
+}
+
+.table-portal tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Star rating */
+.cleanliness-stars {
+    color: #f59e0b;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+}
+
+/* Footer */
+.portal-footer {
+    background-color: #ffffff;
+    border-top: 1px solid var(--border-subtle);
+    padding: 1.5rem 0;
+    margin-top: 3.5rem;
+    font-size: 0.825rem;
+    color: #64748b;
+}
+
+.portal-footer a {
+    color: #475569;
+    text-decoration: none;
+    margin-left: 1.25rem;
+}
+
+.portal-footer a:hover {
+    color: #0f172a;
+    text-decoration: underline;
+}

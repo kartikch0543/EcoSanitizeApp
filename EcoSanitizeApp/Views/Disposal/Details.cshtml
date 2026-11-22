@@ -1,0 +1,72 @@
+@model EcoSanitizeApp.Models.DisposalRequest
+@{
+    ViewData["Title"] = "Disposal Request Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h1 class="h3 fw-bold mb-1">Collection Job #@Model.Id</h1>
+                <p class="text-secondary small mb-0">Logged on @Model.RequestDate.ToString("yyyy-MM-dd HH:mm")</p>
+            </div>
+            <span class="status-badge status-@(Model.Status.ToLower().Replace(" ", "-"))">@Model.Status</span>
+        </div>
+
+        <div class="panel-card mb-4">
+            <div class="panel-header">Request Overview</div>
+            <div class="panel-body">
+                <div class="row g-3 pb-3 border-bottom mb-3">
+                    <div class="col-sm-4 text-secondary small">Collection Location</div>
+                    <div class="col-sm-8 fw-semibold">@Model.Location</div>
+                </div>
+                <div class="row g-3 pb-3 border-bottom mb-3">
+                    <div class="col-sm-4 text-secondary small">Segregation Stream</div>
+                    <div class="col-sm-8"><span class="stream-badge stream-@(Model.Category.ToLower())">@Model.Category</span></div>
+                </div>
+                <div class="row g-3 pb-3 border-bottom mb-3">
+                    <div class="col-sm-4 text-secondary small">Estimated Weight</div>
+                    <div class="col-sm-8 fw-semibold">@Model.EstimatedWeightKg kg</div>
+                </div>
+                <div class="row g-3 pb-3 border-bottom mb-3">
+                    <div class="col-sm-4 text-secondary small">Priority Level</div>
+                    <div class="col-sm-8"><span class="status-badge priority-@(Model.Priority.ToLower())">@Model.Priority</span></div>
+                </div>
+                <div class="row g-3 pb-3 border-bottom mb-3">
+                    <div class="col-sm-4 text-secondary small">Assigned Driver / Unit</div>
+                    <div class="col-sm-8">@(Model.AssignedCollector ?? "Unassigned")</div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-sm-4 text-secondary small">Special Notes</div>
+                    <div class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.SpecialNotes) ? "None provided" : Model.SpecialNotes)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-card mb-4">
+            <div class="panel-header">Designated Stream Protocol</div>
+            <div class="panel-body">
+                <div class="row g-2 mb-2">
+                    <div class="col-sm-4 text-secondary small">Container Color</div>
+                    <div class="col-sm-8 fw-semibold">@ViewBag.BinColor</div>
+                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col-sm-4 text-secondary small">Handling Procedure</div>
+                    <div class="col-sm-8 small">@ViewBag.HandlingInstructions</div>
+                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col-sm-4 text-secondary small">Target Facility</div>
+                    <div class="col-sm-8 small">@ViewBag.TargetFacility</div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-sm-4 text-secondary small">Hazard Rating</div>
+                    <div class="col-sm-8 fw-semibold">@ViewBag.HazardRating / 10</div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index" class="btn-app-secondary">Back to Queue</a>
+        </div>
+    </div>
+</div>

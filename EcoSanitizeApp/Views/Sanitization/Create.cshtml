@@ -1,0 +1,63 @@
+@model EcoSanitizeApp.Models.SanitizationAudit
+@{
+    ViewData["Title"] = "Log Sanitization Audit";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="mb-3">
+            <h1 class="h3 fw-bold mb-1">Log Sanitization Audit</h1>
+            <p class="text-secondary small">Record municipal facility cleanliness grading, disinfectant application, and corrective cleaning flags.</p>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-header">Audit Information</div>
+            <div class="panel-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="AreaName" class="form-label"></label>
+                        <input asp-for="AreaName" class="form-control" placeholder="e.g. Central Terminal Restrooms or Market Shed 4" />
+                        <span asp-validation-for="AreaName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CleanlinessScore" class="form-label"></label>
+                            <select asp-for="CleanlinessScore" class="form-select">
+                                <option value="5">5 (Exemplary hygiene - Full compliance)</option>
+                                <option value="4" selected>4 (Good condition - Minor touch-ups)</option>
+                                <option value="3">3 (Fair condition - Needs scheduled clean)</option>
+                                <option value="2">2 (Unsatisfactory - Follow-up cleaning required)</option>
+                                <option value="1">1 (Critical failure - Immediate closure and disinfection)</option>
+                            </select>
+                            <span asp-validation-for="CleanlinessScore" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DisinfectantUsed" class="form-label"></label>
+                            <input asp-for="DisinfectantUsed" class="form-control" placeholder="e.g. Sodium Hypochlorite 1 percent solution or Quat spray" />
+                            <span asp-validation-for="DisinfectantUsed" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="InspectorName" class="form-label"></label>
+                        <input asp-for="InspectorName" class="form-control" placeholder="Inspector full name and badge ID" />
+                        <span asp-validation-for="InspectorName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn-app-secondary">Cancel and Return</a>
+                        <button type="submit" class="btn-app-primary">Save Inspection Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

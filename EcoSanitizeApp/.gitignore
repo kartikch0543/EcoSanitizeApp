@@ -1,0 +1,44 @@
+## =========================================================================
+## Official .gitignore for .NET / Visual Studio / C# Projects
+## =========================================================================
+
+# Build and Output Folders
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+out/
+
+# Visual Studio IDE Folders and Files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+# Visual Studio Code Local Settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Temporary .NET CLI & Template Engine Folders
+.dotnet_home/
+.templateengine/
+
+# User-specific & Local environment files
+appsettings.Development.json
+*.local.json
+
+# Logs, crash dumps, and diagnostics
+*.log
+*.tmp
+*.temp
+TestResults/
+*.trx
+
+# Package cache
+packages/
+*.nupkg
+.nuget/
