@@ -71,7 +71,7 @@ INSERT INTO dbo.DisposalRequests (Location, CategoryId, EstimatedWeightKg, Prior
 ('Sub-District Health Clinic', 4, 22.00, 'High', 'Disposed', 'Medical Disposal 02', 'Clinical disposables transferred for incineration');
 
 INSERT INTO dbo.SanitizationAudits (AreaName, CleanlinessScore, DisinfectantUsed, InspectorName, RequiresFollowUp, ResultStatus) VALUES
-('Central Transit Station Public Concourse', 4, 'Sodium Hypochlorite 1 percent solution', 'Inspector H. Sharma', 0, 'Pass'),
+('Central Transit Station Public Concourse', 4, 'Sodium Hypochlorite 1% solution', 'Inspector H. Sharma', 0, 'Pass'),
 ('East Wholesale Market Loading Bay', 2, 'Surface Bleach Spray', 'Inspector R. Verma', 1, 'Needs Attention'),
 ('Community Clinic Reception Area', 5, 'Quaternary Ammonium Compound', 'Inspector H. Sharma', 0, 'Pass');
 GO

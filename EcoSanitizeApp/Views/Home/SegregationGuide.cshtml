@@ -3,19 +3,19 @@
 }
 
 <div class="mb-4">
-    <h1 class="h3 fw-bold mb-1">Waste Segregation Guidelines</h1>
+    <h1 class="h4 fw-bold mb-1">Waste Segregation Guidelines</h1>
     <p class="text-secondary small">Standard municipal classifications for source segregation, storage containers, and processing facilities.</p>
 </div>
 
 <div class="row g-3">
     <!-- Organic -->
     <div class="col-md-6">
-        <div class="panel-card h-100">
-            <div class="panel-header d-flex justify-content-between align-items-center">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
                 <span>Green Stream: Organic Waste</span>
-                <span class="stream-badge stream-organic">Hazard Level 1</span>
+                <span class="badge bg-success">Hazard 1</span>
             </div>
-            <div class="panel-body">
+            <div class="panel-civic-body">
                 <p class="small text-secondary mb-2"><strong>Accepted Materials:</strong> Food scraps, fruit and vegetable peels, tea grounds, leaves, garden clippings, and compostable organic matter.</p>
                 <p class="small text-secondary mb-2"><strong>Handling Procedure:</strong> Keep collection bins covered to prevent pest entry and moisture accumulation. Do not mix with non-biodegradable plastics.</p>
                 <p class="small text-secondary mb-0"><strong>Target Facility:</strong> Municipal Composting Facility or Anaerobic Biogas Digester.</p>
@@ -25,12 +25,12 @@
 
     <!-- Recyclable -->
     <div class="col-md-6">
-        <div class="panel-card h-100">
-            <div class="panel-header d-flex justify-content-between align-items-center">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
                 <span>Blue Stream: Recyclable Dry Waste</span>
-                <span class="stream-badge stream-recyclable">Hazard Level 2</span>
+                <span class="badge bg-primary">Hazard 2</span>
             </div>
-            <div class="panel-body">
+            <div class="panel-civic-body">
                 <p class="small text-secondary mb-2"><strong>Accepted Materials:</strong> PET plastic bottles, clean containers, corrugated cardboard boxes, newspapers, glass bottles, aluminum and tin cans.</p>
                 <p class="small text-secondary mb-2"><strong>Handling Procedure:</strong> Rinse residual liquids, flatten boxes and containers to conserve space, and ensure materials remain dry.</p>
                 <p class="small text-secondary mb-0"><strong>Target Facility:</strong> Material Recovery Facility (MRF) for mechanical sorting and baling.</p>
@@ -40,12 +40,12 @@
 
     <!-- Hazardous -->
     <div class="col-md-6">
-        <div class="panel-card h-100">
-            <div class="panel-header d-flex justify-content-between align-items-center">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
                 <span>Red Stream: Hazardous and Chemical Waste</span>
-                <span class="stream-badge stream-hazardous">Hazard Level 8</span>
+                <span class="badge bg-danger">Hazard 8</span>
             </div>
-            <div class="panel-body">
+            <div class="panel-civic-body">
                 <p class="small text-secondary mb-2"><strong>Accepted Materials:</strong> Household and industrial batteries, paint cans, solvents, laboratory chemical residues, fluorescent light tubes, e-waste.</p>
                 <p class="small text-secondary mb-2"><strong>Handling Procedure:</strong> Seal in leak-proof chemical containers. Wear protective gloves and eye gear during pickup. Never mix with general municipal waste.</p>
                 <p class="small text-secondary mb-0"><strong>Target Facility:</strong> Specialized Hazardous Waste Containment and Chemical Neutralization Plant.</p>
@@ -55,12 +55,12 @@
 
     <!-- Sanitary -->
     <div class="col-md-6">
-        <div class="panel-card h-100">
-            <div class="panel-header d-flex justify-content-between align-items-center">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
                 <span>Yellow Stream: Sanitary and Biomedical Waste</span>
-                <span class="stream-badge stream-sanitary">Hazard Level 7</span>
+                <span class="badge bg-warning text-dark">Hazard 7</span>
             </div>
-            <div class="panel-body">
+            <div class="panel-civic-body">
                 <p class="small text-secondary mb-2"><strong>Accepted Materials:</strong> Used bandages, medical dressings, disposable diapers, sanitary napkins, examination gloves, discarded face masks.</p>
                 <p class="small text-secondary mb-2"><strong>Handling Procedure:</strong> Double-bag in durable yellow biohazard bags. Fasten tightly with secure closures. Direct transfer to incineration transit vehicles.</p>
                 <p class="small text-secondary mb-0"><strong>Target Facility:</strong> High-Temperature Medical Waste Incinerator.</p>
@@ -70,5 +70,5 @@
 </div>
 
 <div class="mt-4 pt-3 border-top">
-    <a class="btn-app-primary" asp-controller="Disposal" asp-action="Create">Log Collection Request for These Streams</a>
+    <a class="btn-civic-primary" asp-controller="Disposal" asp-action="Create">+ Log Collection Request for These Streams</a>
 </div>

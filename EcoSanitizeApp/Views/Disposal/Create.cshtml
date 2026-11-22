@@ -6,19 +6,19 @@
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <div class="mb-3">
-            <h1 class="h3 fw-bold mb-1">Log Disposal Request</h1>
+            <h1 class="h4 fw-bold mb-1">Log Disposal Request</h1>
             <p class="text-secondary small">Enter location details and waste classification for municipal collection dispatch.</p>
         </div>
 
-        <div class="panel-card">
-            <div class="panel-header">Request Details</div>
-            <div class="panel-body">
+        <div class="panel-civic">
+            <div class="panel-civic-header">Request Details</div>
+            <div class="panel-civic-body">
                 <form asp-action="Create" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
 
                     <div class="mb-3">
                         <label asp-for="Location" class="form-label"></label>
-                        <input asp-for="Location" class="form-control" placeholder="Ward number, facility, or street address" />
+                        <input asp-for="Location" class="form-control" placeholder="Ward number, facility, or street address" autofocus />
                         <span asp-validation-for="Location" class="text-danger small"></span>
                     </div>
 
@@ -68,8 +68,8 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <a asp-action="Index" class="btn-app-secondary">Cancel and Return</a>
-                        <button type="submit" class="btn-app-primary">Submit Request</button>
+                        <a asp-action="Index" class="btn-civic-secondary">Cancel and Return</a>
+                        <button type="submit" class="btn-civic-primary">Submit Request</button>
                     </div>
                 </form>
             </div>

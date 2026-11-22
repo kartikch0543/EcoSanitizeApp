@@ -112,7 +112,7 @@ namespace EcoSanitizeApp.Data
                     Id = 1,
                     AreaName = "Central Transit Station Public Concourse",
                     CleanlinessScore = 4,
-                    DisinfectantUsed = "Sodium Hypochlorite 1 percent solution",
+                    DisinfectantUsed = "Sodium Hypochlorite 1% solution",
                     AuditDate = DateTime.Now.AddHours(-5),
                     InspectorName = "Inspector H. Sharma",
                     RequiresFollowUp = false,

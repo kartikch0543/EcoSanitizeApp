@@ -8,56 +8,64 @@
 
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
     <div>
-        <h1 class="h3 fw-bold mb-1">Disposal Tracking Queue</h1>
-        <p class="text-secondary small mb-0">Total active items in queue: <strong>@ViewBag.TotalCount</strong></p>
+        <h1 class="h4 fw-bold mb-1">Disposal Tracking Queue</h1>
+        <p class="text-secondary small mb-0">Total active requests: <strong>@ViewBag.TotalCount</strong></p>
     </div>
-    <a asp-action="Create" class="btn-app-primary">
-        + Log New Collection Request
+    <a asp-action="Create" class="btn-civic-primary">
+        + Log Collection Request
     </a>
 </div>
 
-<!-- Stream Filter Strip -->
-<div class="filter-strip d-flex flex-wrap align-items-center gap-1">
-    <span class="small fw-semibold text-secondary me-2">Stream Filter:</span>
-    <a href="@Url.Action("Index", "Disposal")" class="filter-btn @(string.IsNullOrEmpty(activeCategory) ? "active" : "")">All</a>
-    <a href="@Url.Action("Index", "Disposal", new { category = "Organic" })" class="filter-btn @(activeCategory == "Organic" ? "active" : "")">Organic (Green)</a>
-    <a href="@Url.Action("Index", "Disposal", new { category = "Recyclable" })" class="filter-btn @(activeCategory == "Recyclable" ? "active" : "")">Recyclable (Blue)</a>
-    <a href="@Url.Action("Index", "Disposal", new { category = "Hazardous" })" class="filter-btn @(activeCategory == "Hazardous" ? "active" : "")">Hazardous (Red)</a>
-    <a href="@Url.Action("Index", "Disposal", new { category = "Sanitary" })" class="filter-btn @(activeCategory == "Sanitary" ? "active" : "")">Sanitary (Yellow)</a>
+<!-- Styled Horizontal Stream Filter Bar -->
+<div class="stream-filter-bar">
+    <span class="small fw-semibold text-secondary me-2">Stream:</span>
+    <a href="@Url.Action("Index", "Disposal")" class="filter-tab @(string.IsNullOrEmpty(activeCategory) ? "active" : "")">All Streams</a>
+    <a href="@Url.Action("Index", "Disposal", new { category = "Organic" })" class="filter-tab @(activeCategory == "Organic" ? "active" : "")">
+        <span class="stream-dot dot-organic"></span>Organic
+    </a>
+    <a href="@Url.Action("Index", "Disposal", new { category = "Recyclable" })" class="filter-tab @(activeCategory == "Recyclable" ? "active" : "")">
+        <span class="stream-dot dot-recyclable"></span>Recyclable
+    </a>
+    <a href="@Url.Action("Index", "Disposal", new { category = "Hazardous" })" class="filter-tab @(activeCategory == "Hazardous" ? "active" : "")">
+        <span class="stream-dot dot-hazardous"></span>Hazardous
+    </a>
+    <a href="@Url.Action("Index", "Disposal", new { category = "Sanitary" })" class="filter-tab @(activeCategory == "Sanitary" ? "active" : "")">
+        <span class="stream-dot dot-sanitary"></span>Sanitary
+    </a>
 </div>
 
-<div class="table-responsive table-portal">
-    <table class="table table-hover align-middle mb-0">
+<div class="table-portal-civic">
+    <table>
         <thead>
             <tr>
-                <th style="width: 8%;">ID</th>
-                <th style="width: 24%;">Collection Location</th>
-                <th style="width: 14%;">Segregation Stream</th>
-                <th style="width: 11%;">Weight</th>
-                <th style="width: 11%;">Priority</th>
-                <th style="width: 11%;">Status</th>
-                <th style="width: 11%;">Assigned Unit</th>
-                <th style="width: 10%; text-align: right;">Actions</th>
+                <th style="width: 65px; white-space: nowrap;">ID</th>
+                <th style="min-width: 200px;">Location</th>
+                <th style="width: 140px; white-space: nowrap;">Stream</th>
+                <th style="width: 95px; white-space: nowrap;">Weight</th>
+                <th style="width: 100px; white-space: nowrap;">Priority</th>
+                <th style="width: 110px; white-space: nowrap;">Status</th>
+                <th style="width: 160px; white-space: nowrap;">Assigned Unit</th>
+                <th style="width: 175px; white-space: nowrap; text-align: right;">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                string streamClass = item.Category switch
+                string dotClass = item.Category switch
                 {
-                    "Organic" => "badge-stream-organic",
-                    "Recyclable" => "badge-stream-recyclable",
-                    "Hazardous" => "badge-stream-hazardous",
-                    "Sanitary" => "badge-stream-sanitary",
+                    "Organic" => "dot-organic",
+                    "Recyclable" => "dot-recyclable",
+                    "Hazardous" => "dot-hazardous",
+                    "Sanitary" => "dot-sanitary",
                     _ => ""
                 };
 
                 string priorityClass = item.Priority switch
                 {
-                    "Emergency" => "badge-priority-emergency",
-                    "High" => "badge-priority-high",
-                    "Medium" => "badge-priority-medium",
-                    _ => "badge-priority-low"
+                    "Emergency" => "priority-emergency",
+                    "High" => "priority-high",
+                    "Medium" => "priority-medium",
+                    _ => "priority-low"
                 };
 
                 string statusClass = item.Status switch
@@ -69,27 +77,35 @@
                 };
 
                 <tr>
-                    <td class="fw-bold text-muted">#@item.Id</td>
+                    <td class="fw-bold text-muted" style="white-space: nowrap;">#@item.Id</td>
                     <td class="fw-semibold">@item.Location</td>
-                    <td><span class="badge-stream @streamClass">@item.Category</span></td>
-                    <td class="fw-bold">@item.EstimatedWeightKg kg</td>
-                    <td><span class="badge-priority @priorityClass">@item.Priority</span></td>
-                    <td><span class="badge-status @statusClass">@item.Status</span></td>
-                    <td class="text-secondary small">@(item.AssignedCollector ?? "Unassigned")</td>
-                    <td style="text-align: right;">
+                    <td style="white-space: nowrap;">
+                        <span class="stream-dot @dotClass"></span>@item.Category
+                    </td>
+                    <td class="fw-semibold" style="white-space: nowrap;">@item.EstimatedWeightKg kg</td>
+                    <td style="white-space: nowrap;">
+                        <span class="@priorityClass">@item.Priority</span>
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <span class="@statusClass">@item.Status</span>
+                    </td>
+                    <td class="text-secondary small" style="white-space: nowrap;">
+                        @(item.AssignedCollector ?? "Unassigned")
+                    </td>
+                    <td style="white-space: nowrap; text-align: right;">
                         <div class="d-inline-flex gap-1">
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn-sm-action">Details</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn-table-action">Details</a>
                             @if (item.Status != "Disposed")
                             {
-                                <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                <form asp-action="UpdateStatus" method="post" class="d-inline m-0">
                                     <input type="hidden" name="id" value="@item.Id" />
                                     <input type="hidden" name="status" value="In-Transit" />
-                                    <button type="submit" class="btn-sm-action text-primary" title="Mark In-Transit">Transit</button>
+                                    <button type="submit" class="btn-table-action action-transit">Transit</button>
                                 </form>
-                                <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                <form asp-action="UpdateStatus" method="post" class="d-inline m-0">
                                     <input type="hidden" name="id" value="@item.Id" />
                                     <input type="hidden" name="status" value="Disposed" />
-                                    <button type="submit" class="btn-sm-action text-success" title="Mark Disposed">Disposed</button>
+                                    <button type="submit" class="btn-table-action action-disposed">Disposed</button>
                                 </form>
                             }
                         </div>

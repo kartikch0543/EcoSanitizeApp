@@ -5,69 +5,67 @@
 
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
     <div>
-        <h1 class="h3 fw-bold mb-1">Sanitization Management and Audits</h1>
-        <p class="text-secondary small mb-0">Total inspections: <strong>@ViewData["TotalAudits"]</strong> | Areas requiring follow-up: <strong class="text-danger">@ViewData["FollowUpCount"]</strong></p>
+        <h1 class="h4 fw-bold mb-1">Sanitization Management and Audits</h1>
+        <p class="text-secondary small mb-0">Total inspections logged: <strong>@ViewData["TotalAudits"]</strong> | Areas requiring follow-up: <strong class="text-danger">@ViewData["FollowUpCount"]</strong></p>
     </div>
-    <a asp-action="Create" class="btn-app-primary">
+    <a asp-action="Create" class="btn-civic-primary">
         + Record New Audit
     </a>
 </div>
 
-<div class="table-responsive table-portal">
-    <table class="table table-hover align-middle mb-0">
+<div class="table-portal-civic">
+    <table>
         <thead>
             <tr>
-                <th style="width: 8%;">ID</th>
-                <th style="width: 25%;">Facility / Area Name</th>
-                <th style="width: 15%;">Cleanliness Score</th>
-                <th style="width: 18%;">Disinfectant Applied</th>
-                <th style="width: 12%;">Inspector</th>
-                <th style="width: 11%;">Follow-up Needed</th>
-                <th style="width: 11%; text-align: center;">Outcome</th>
+                <th style="width: 65px; white-space: nowrap;">ID</th>
+                <th style="min-width: 220px;">Facility / Inspected Area</th>
+                <th style="width: 140px; white-space: nowrap;">Score</th>
+                <th style="min-width: 220px;">Disinfectant Applied</th>
+                <th style="width: 170px; white-space: nowrap;">Inspector</th>
+                <th style="width: 150px; white-space: nowrap;">Follow-Up</th>
+                <th style="width: 130px; white-space: nowrap; text-align: center;">Outcome</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var audit in Model)
             {
                 <tr>
-                    <td class="fw-bold text-muted">#@audit.Id</td>
+                    <td class="fw-bold text-muted" style="white-space: nowrap;">#@audit.Id</td>
                     <td class="fw-semibold">@audit.AreaName</td>
-                    <td>
-                        <span class="cleanliness-stars">
-                            @for (int i = 1; i <= 5; i++)
-                            {
-                                if (i <= audit.CleanlinessScore)
-                                {
-                                    <span>★</span>
-                                }
-                                else
-                                {
-                                    <span class="text-muted opacity-25">☆</span>
-                                }
-                            }
-                        </span>
-                        <span class="small fw-semibold text-muted ms-1">(@audit.CleanlinessScore/5)</span>
+                    <td style="white-space: nowrap;">
+                        @if (audit.CleanlinessScore <= 2)
+                        {
+                            <span class="text-danger fw-bold">@audit.CleanlinessScore / 5</span>
+                        }
+                        else if (audit.CleanlinessScore == 3)
+                        {
+                            <span class="text-warning-emphasis fw-bold">@audit.CleanlinessScore / 5</span>
+                        }
+                        else
+                        {
+                            <span class="fw-bold text-dark">@audit.CleanlinessScore / 5</span>
+                        }
                     </td>
-                    <td><code class="text-dark bg-light px-2 py-1 rounded border">@audit.DisinfectantUsed</code></td>
-                    <td class="small text-secondary">@audit.InspectorName</td>
-                    <td>
+                    <td>@audit.DisinfectantUsed</td>
+                    <td class="text-secondary small" style="white-space: nowrap;">@audit.InspectorName</td>
+                    <td style="white-space: nowrap;">
                         @if (audit.RequiresFollowUp)
                         {
-                            <span class="badge-followup badge-followup-action">Action Required</span>
+                            <span class="text-danger fw-semibold">Action Required</span>
                         }
                         else
                         {
-                            <span class="badge-followup badge-followup-compliant">Compliant</span>
+                            <span class="text-secondary small">Compliant</span>
                         }
                     </td>
-                    <td style="text-align: center;">
+                    <td style="white-space: nowrap; text-align: center;">
                         @if (audit.ResultStatus == "Pass")
                         {
-                            <span class="badge-status badge-outcome-pass">Pass</span>
+                            <span class="badge-outcome-pass">Pass</span>
                         }
                         else
                         {
-                            <span class="badge-status badge-outcome-attention">Needs Attention</span>
+                            <span class="badge-outcome-attention">Needs Attention</span>
                         }
                     </td>
                 </tr>

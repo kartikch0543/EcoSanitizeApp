@@ -6,19 +6,19 @@
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <div class="mb-3">
-            <h1 class="h3 fw-bold mb-1">Log Sanitization Audit</h1>
+            <h1 class="h4 fw-bold mb-1">Log Sanitization Audit</h1>
             <p class="text-secondary small">Record municipal facility cleanliness grading, disinfectant application, and corrective cleaning flags.</p>
         </div>
 
-        <div class="panel-card">
-            <div class="panel-header">Audit Information</div>
-            <div class="panel-body">
+        <div class="panel-civic">
+            <div class="panel-civic-header">Audit Information</div>
+            <div class="panel-civic-body">
                 <form asp-action="Create" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
 
                     <div class="mb-3">
                         <label asp-for="AreaName" class="form-label"></label>
-                        <input asp-for="AreaName" class="form-control" placeholder="e.g. Central Terminal Restrooms or Market Shed 4" />
+                        <input asp-for="AreaName" class="form-control" placeholder="e.g. Central Terminal Restrooms or Market Shed 4" autofocus />
                         <span asp-validation-for="AreaName" class="text-danger small"></span>
                     </div>
 
@@ -37,7 +37,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label asp-for="DisinfectantUsed" class="form-label"></label>
-                            <input asp-for="DisinfectantUsed" class="form-control" placeholder="e.g. Sodium Hypochlorite 1 percent solution or Quat spray" />
+                            <input asp-for="DisinfectantUsed" class="form-control" placeholder="e.g. Sodium Hypochlorite 1% solution or Quat spray" />
                             <span asp-validation-for="DisinfectantUsed" class="text-danger small"></span>
                         </div>
                     </div>
@@ -49,8 +49,8 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <a asp-action="Index" class="btn-app-secondary">Cancel and Return</a>
-                        <button type="submit" class="btn-app-primary">Save Inspection Record</button>
+                        <a asp-action="Index" class="btn-civic-secondary">Cancel and Return</a>
+                        <button type="submit" class="btn-civic-primary">Save Inspection Record</button>
                     </div>
                 </form>
             </div>

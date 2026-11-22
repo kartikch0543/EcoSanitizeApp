@@ -1,41 +1,41 @@
 ﻿@model EcoSanitizeApp.Models.DashboardSummary
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Operations Dashboard";
 }
 
-<!-- Hero Section (Matching Image 1) -->
-<div class="hero-banner-custom">
+<!-- Hero Section (Restrained Civic Palette) -->
+<div class="hero-civic-card">
     <div class="row align-items-center">
         <div class="col-lg-8 mb-4 mb-lg-0">
-            <div class="hero-pill-badge">
-                🛡 Municipal Waste & Hygiene Management
+            <div class="hero-dept-tag">
+                Municipal Operations &bull; Sanitation Division
             </div>
-            <h1 class="hero-title">
-                🌿 EcoSanitize Platform
+            <h1 class="hero-civic-title">
+                EcoSanitize Portal
             </h1>
-            <p class="hero-subtitle">
-                Urban Waste Segregation, Disposal & Sanitization System
+            <p class="hero-civic-subtitle">
+                Urban waste segregation management, disposal logistics dispatch, and facility sanitization inspections.
             </p>
             <div class="d-flex flex-wrap gap-2 pt-1">
-                <a class="btn-hero-yellow" asp-controller="Disposal" asp-action="Create">
+                <a class="btn-civic-accent" asp-controller="Disposal" asp-action="Create">
                     + Log Waste Disposal Request
                 </a>
-                <a class="btn-hero-outline" asp-controller="Sanitization" asp-action="Create">
-                    📋 Record Sanitization Audit
+                <a class="btn-civic-outline" asp-controller="Sanitization" asp-action="Create">
+                    Record Sanitization Audit
                 </a>
-                <a class="btn-hero-outline" asp-controller="Home" asp-action="SegregationGuide">
-                    ♻ Segregation Rules
+                <a class="btn-civic-outline" asp-controller="Home" asp-action="SegregationGuide">
+                    Segregation Rules
                 </a>
             </div>
         </div>
 
         <div class="col-lg-4">
-            <div class="hero-stat-card">
-                <div class="hero-stat-label">Total Waste Managed</div>
-                <div class="hero-stat-value">
-                    @Model.TotalWeightKg <span class="hero-stat-unit">kg</span>
+            <div class="hero-civic-stat">
+                <div class="stat-label-small">Total Waste Managed</div>
+                <div class="stat-value-large">
+                    @Model.TotalWeightKg <span class="stat-unit-text">kg</span>
                 </div>
-                <div class="progress mb-2" style="height: 8px;">
+                <div class="progress mb-2" style="height: 6px;">
                     <div class="progress-bar bg-success" style="width: 75%"></div>
                 </div>
                 <div class="small text-muted">
@@ -46,21 +46,18 @@
     </div>
 </div>
 
-<!-- 3 Metric Cards (Matching Image 1) -->
+<!-- 3 Metric Cards (Rectangular, Civic Style) -->
 <div class="row g-3 mb-4">
     <!-- Card 1 -->
     <div class="col-md-4">
-        <div class="metric-tile-card">
+        <div class="metric-card-civic">
             <div>
-                <div class="metric-tile-header">
-                    <span class="metric-tile-label">Total Disposal Requests</span>
-                    <span class="metric-tile-icon text-primary">🚚</span>
-                </div>
-                <div class="metric-tile-value text-primary">
+                <span class="metric-title-small">Total Disposal Requests</span>
+                <div class="metric-digit-large text-primary">
                     @Model.TotalRequests
                 </div>
             </div>
-            <a asp-controller="Disposal" asp-action="Index" class="btn-metric-link text-primary">
+            <a asp-controller="Disposal" asp-action="Index" class="btn-metric-route text-primary">
                 View All Requests &rarr;
             </a>
         </div>
@@ -68,17 +65,14 @@
 
     <!-- Card 2 -->
     <div class="col-md-4">
-        <div class="metric-tile-card">
+        <div class="metric-card-civic">
             <div>
-                <div class="metric-tile-header">
-                    <span class="metric-tile-label">Pending Collection</span>
-                    <span class="metric-tile-icon text-warning">⏳</span>
-                </div>
-                <div class="metric-tile-value text-warning">
+                <span class="metric-title-small">Pending Collection</span>
+                <div class="metric-digit-large text-warning">
                     @Model.PendingRequests
                 </div>
             </div>
-            <a href="/Disposal" class="btn-metric-link text-warning">
+            <a href="/Disposal" class="btn-metric-route text-warning">
                 Review Pending Queue &rarr;
             </a>
         </div>
@@ -86,87 +80,84 @@
 
     <!-- Card 3 -->
     <div class="col-md-4">
-        <div class="metric-tile-card">
+        <div class="metric-card-civic">
             <div>
-                <div class="metric-tile-header">
-                    <span class="metric-tile-label">Emergency / High Priority</span>
-                    <span class="metric-tile-icon text-danger">⚠️</span>
-                </div>
-                <div class="metric-tile-value text-danger">
+                <span class="metric-title-small">Emergency / High Priority</span>
+                <div class="metric-digit-large text-danger">
                     @Model.HighPriorityRequests
                 </div>
             </div>
-            <a href="/Disposal?priority=High" class="btn-metric-link text-danger">
+            <a href="/Disposal?priority=High" class="btn-metric-route text-danger">
                 Urgent Queue &rarr;
             </a>
         </div>
     </div>
 </div>
 
-<!-- 3 Core Solution Pillars -->
+<!-- 3 Solution Pillars -->
 <div class="mb-3">
-    <h3 class="fw-bold mb-1 fs-5">Problem Statement Solutions</h3>
-    <p class="text-secondary small">Integrated waste segregation, disposal logistics tracking, and sanitization management.</p>
+    <h2 class="h5 fw-bold mb-1">Operational Modules</h2>
+    <p class="text-secondary small mb-0">Core workflows for waste segregation compliance, logistics dispatch, and facility hygiene.</p>
 </div>
 
 <div class="row g-3">
-    <!-- Pillar 1: Waste Segregation -->
+    <!-- Module 1: Waste Segregation -->
     <div class="col-md-4">
-        <div class="panel-card h-100">
-            <div class="panel-header d-flex justify-content-between align-items-center">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
                 <span>1. Waste Segregation</span>
-                <span class="badge bg-success">Stream Routing</span>
+                <span class="badge bg-secondary">Streams</span>
             </div>
-            <div class="panel-body">
+            <div class="panel-civic-body">
                 <p class="small text-secondary mb-3">
                     Classifies municipal waste into 4 designated streams: Organic (Green Wet), Recyclable (Blue Dry), Hazardous (Red Toxic), and Sanitary (Yellow Biohazard).
                 </p>
-                <div class="d-flex flex-wrap gap-1 mb-3">
-                    <span class="badge-stream badge-stream-organic">Green Wet</span>
-                    <span class="badge-stream badge-stream-recyclable">Blue Dry</span>
-                    <span class="badge-stream badge-stream-hazardous">Red Toxic</span>
-                    <span class="badge-stream badge-stream-sanitary">Yellow Bio</span>
+                <div class="small text-secondary mb-3">
+                    <span class="me-2"><span class="stream-dot dot-organic"></span>Organic</span>
+                    <span class="me-2"><span class="stream-dot dot-recyclable"></span>Recyclable</span>
+                    <span class="me-2"><span class="stream-dot dot-hazardous"></span>Hazardous</span>
+                    <span><span class="stream-dot dot-sanitary"></span>Sanitary</span>
                 </div>
-                <a class="btn-app-secondary w-100" asp-controller="Home" asp-action="SegregationGuide">
+                <a class="btn-civic-secondary w-100" asp-controller="Home" asp-action="SegregationGuide">
                     Review Segregation Rules &rarr;
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Pillar 2: Disposal Tracking -->
+    <!-- Module 2: Disposal Tracking -->
     <div class="col-md-4">
-        <div class="panel-card h-100">
-            <div class="panel-header d-flex justify-content-between align-items-center">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
                 <span>2. Disposal Tracking</span>
-                <span class="badge bg-primary">Logistics</span>
+                <span class="badge bg-secondary">Logistics</span>
             </div>
-            <div class="panel-body">
+            <div class="panel-civic-body">
                 <p class="small text-secondary mb-3">
                     Monitors pickup requests from submission to final destination. Coordinates driver assignments, urgency triage, and collection status updates.
                 </p>
                 <div class="d-flex align-items-center gap-2 mb-3 small">
-                    <span class="badge-status badge-status-pending">Pending</span>
+                    <span class="badge-status-pending">Pending</span>
                     <span>&rarr;</span>
-                    <span class="badge-status badge-status-transit">In-Transit</span>
+                    <span class="badge-status-transit">In-Transit</span>
                     <span>&rarr;</span>
-                    <span class="badge-status badge-status-disposed">Disposed</span>
+                    <span class="badge-status-disposed">Disposed</span>
                 </div>
-                <a class="btn-app-secondary w-100" asp-controller="Disposal" asp-action="Index">
+                <a class="btn-civic-secondary w-100" asp-controller="Disposal" asp-action="Index">
                     Open Disposal Queue &rarr;
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Pillar 3: Sanitization Audits -->
+    <!-- Module 3: Sanitization Audits -->
     <div class="col-md-4">
-        <div class="panel-card h-100">
-            <div class="panel-header d-flex justify-content-between align-items-center">
-                <span>3. Sanitization System</span>
-                <span class="badge bg-info text-dark">Hygiene Audit</span>
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
+                <span>3. Sanitization Audits</span>
+                <span class="badge bg-secondary">Compliance</span>
             </div>
-            <div class="panel-body">
+            <div class="panel-civic-body">
                 <p class="small text-secondary mb-3">
                     Audits cleanliness of public facilities, restrooms, and transit stations. Records chemical disinfectants and automatically triggers follow-up cleaning orders.
                 </p>
@@ -174,7 +165,7 @@
                     <span class="small text-muted">Audits Logged: <strong>@Model.TotalAudits</strong></span>
                     <span class="small text-danger">Action Required: <strong>@Model.FollowUpAuditsCount</strong></span>
                 </div>
-                <a class="btn-app-secondary w-100" asp-controller="Sanitization" asp-action="Index">
+                <a class="btn-civic-secondary w-100" asp-controller="Sanitization" asp-action="Index">
                     Open Sanitization Logs &rarr;
                 </a>
             </div>
