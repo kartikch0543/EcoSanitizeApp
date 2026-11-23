@@ -15,9 +15,7 @@ namespace EcoSanitizeApp.Services
             _context = context;
         }
 
-        // ==========================================
         // Disposal Requests
-        // ==========================================
         public IEnumerable<DisposalRequest> GetAllDisposalRequests()
         {
             return _context.DisposalRequests.OrderByDescending(r => r.RequestDate).ToList();
@@ -64,9 +62,7 @@ namespace EcoSanitizeApp.Services
             return true;
         }
 
-        // ==========================================
         // Sanitization Audits
-        // ==========================================
         public IEnumerable<SanitizationAudit> GetAllSanitizationAudits()
         {
             return _context.SanitizationAudits.OrderByDescending(a => a.AuditDate).ToList();
@@ -94,9 +90,7 @@ namespace EcoSanitizeApp.Services
             _context.SaveChanges();
         }
 
-        // ==========================================
         // Complaints Management
-        // ==========================================
         public IEnumerable<SanitationComplaint> GetAllComplaints()
         {
             return _context.Complaints.OrderByDescending(c => c.ReportedDate).ToList();
@@ -143,9 +137,7 @@ namespace EcoSanitizeApp.Services
             return true;
         }
 
-        // ==========================================
         // Sanitation Workers
-        // ==========================================
         public IEnumerable<SanitationWorker> GetAllWorkers()
         {
             return _context.Workers.OrderBy(w => w.FullName).ToList();
@@ -177,9 +169,7 @@ namespace EcoSanitizeApp.Services
             return true;
         }
 
-        // ==========================================
         // Collection Schedules
-        // ==========================================
         public IEnumerable<CollectionSchedule> GetAllSchedules()
         {
             return _context.CollectionSchedules.OrderBy(s => s.WardZone).ThenBy(s => s.CollectionDay).ToList();
@@ -206,9 +196,7 @@ namespace EcoSanitizeApp.Services
             return true;
         }
 
-        // ==========================================
-        // Dashboard & Analytics Summary
-        // ==========================================
+        // Dashboard and Analytics
         public DashboardSummary GetDashboardSummary()
         {
             var requests = _context.DisposalRequests.ToList();

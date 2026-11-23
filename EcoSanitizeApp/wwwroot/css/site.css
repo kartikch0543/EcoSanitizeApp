@@ -1,8 +1,4 @@
-/* =========================================================================
-   EcoSanitize: Municipal Waste Management & Sanitization System
-   Modern Professional Civic Dashboard Stylesheet
-   Forest Green & Emerald Design System
-   ========================================================================= */
+/* EcoSanitize - Municipal Waste Management and Sanitization System */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -72,9 +68,7 @@ body.civic-portal-body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* =========================================================================
-   MODERN HORIZONTAL TOP NAVBAR
-   ========================================================================= */
+/* Top Navbar */
 .civic-navbar {
     background-color: var(--nav-bg);
     border-bottom: 1px solid var(--border-color);
@@ -280,9 +274,7 @@ body.civic-portal-body {
     color: #DC2626;
 }
 
-/* =========================================================================
-   MAIN VIEWPORT & CONTAINER (FULL WIDTH, NO SIDEBAR OFFSET)
-   ========================================================================= */
+/* Main Viewport Container */
 .civic-main-viewport {
     flex: 1 0 auto;
     width: 100%;
@@ -290,9 +282,7 @@ body.civic-portal-body {
     margin: 0 auto;
 }
 
-/* =========================================================================
-   HERO / BANNER STYLES
-   ========================================================================= */
+/* Hero Banner */
 .hero-civic-card {
     background-color: var(--brand-forest);
     color: #ffffff;
@@ -360,9 +350,7 @@ body.civic-portal-body {
     color: var(--text-muted);
 }
 
-/* =========================================================================
-   METRIC TILES: CRISP RECTANGULAR CARDS
-   ========================================================================= */
+/* Metric Cards */
 .metric-card-civic {
     background-color: #ffffff;
     border: 1px solid var(--border-subtle);
@@ -423,9 +411,7 @@ body.civic-portal-body {
     border-color: #94a3b8;
 }
 
-/* =========================================================================
-   PANELS & CONTAINERS
-   ========================================================================= */
+/* Panels and Cards */
 .panel-civic {
     background-color: #ffffff;
     border: 1px solid var(--border-subtle);
@@ -445,9 +431,7 @@ body.civic-portal-body {
     padding: 1.25rem;
 }
 
-/* =========================================================================
-   BUTTONS: SHARP / 4PX RECTANGULAR, NO PILL BUTTONS
-   ========================================================================= */
+/* Buttons */
 .btn-civic-primary {
     background-color: var(--brand-forest);
     border: 1px solid var(--brand-forest);
@@ -580,9 +564,7 @@ body.civic-portal-body {
     border-color: #86efac;
 }
 
-/* =========================================================================
-   SEARCH, FILTERS & PAGINATION BAR
-   ========================================================================= */
+/* Filters and Pagination */
 .search-filter-card {
     background-color: #ffffff;
     border: 1px solid var(--border-subtle);
@@ -641,9 +623,7 @@ body.civic-portal-body {
     background-color: #ffffff;
 }
 
-/* =========================================================================
-   TABLES: SOLID STRUCTURE, NO CLUMSY WRAPPING
-   ========================================================================= */
+/* Tables */
 .table-portal-civic {
     background-color: #ffffff;
     border: 1px solid var(--border-subtle);
@@ -779,9 +759,7 @@ body.civic-portal-body {
     font-weight: 400;
 }
 
-/* =========================================================================
-   FORMS & INPUTS
-   ========================================================================= */
+/* Form Inputs */
 .form-label {
     font-size: 0.875rem;
     font-weight: 600;
@@ -803,9 +781,7 @@ body.civic-portal-body {
     outline: none;
 }
 
-/* =========================================================================
-   TOAST NOTIFICATIONS
-   ========================================================================= */
+/* Alerts and Toasts */
 .civic-toast {
     border-radius: 4px;
     padding: 0.75rem 1rem;
@@ -827,32 +803,7 @@ body.civic-portal-body {
     color: #991b1b;
 }
 
-/* =========================================================================
-   FOOTER
-   ========================================================================= */
-.app-portal-footer {
-    background-color: #ffffff;
-    border-top: 1px solid var(--border-subtle);
-    padding: 1.25rem 0;
-    margin-top: 3.5rem;
-    font-size: 0.825rem;
-    color: var(--text-muted);
-}
-
-.app-portal-footer a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    margin-left: 1.25rem;
-}
-
-.app-portal-footer a:hover {
-    color: var(--text-primary);
-    text-decoration: underline;
-}
-
-/* =========================================================================
-   RESPONSIVE OVERRIDES
-   ========================================================================= */
+/* Responsive Navigation */
 @media (max-width: 1199.98px) {
     .civic-navbar .navbar-collapse {
         background-color: #FFFFFF;
@@ -876,9 +827,7 @@ body.civic-portal-body {
     }
 }
 
-/* =========================================================================
-   MUNICIPAL ENTERPRISE FOOTER
-   ========================================================================= */
+/* Municipal Footer */
 .civic-portal-footer {
     background-color: #ffffff;
     border-top: 1px solid var(--border-color);
@@ -944,9 +893,7 @@ body.civic-portal-body {
     margin: 0 0.15rem;
 }
 
-/* =========================================================================
-   PRINTABLE STYLES FOR PDF AUDIT REPORTS
-   ========================================================================= */
+/* Printable Styles */
 @media print {
     .civic-navbar,
     .civic-portal-footer,

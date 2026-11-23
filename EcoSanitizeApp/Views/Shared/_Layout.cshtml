@@ -20,11 +20,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body class="civic-portal-body">
-    <!-- Modern Enterprise Horizontal Top Navbar -->
     <header class="civic-navbar sticky-top">
         <nav class="navbar navbar-expand-xl navbar-light bg-white p-0">
             <div class="container-fluid px-3 px-lg-4">
-                <!-- Brand: Logo & Title -->
                 <a class="navbar-brand d-flex align-items-center gap-2 py-2 me-4" asp-controller="Home" asp-action="Index">
                     <div class="brand-emblem-top">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -38,16 +36,12 @@
                     </div>
                 </a>
 
-                <!-- Responsive Hamburger Toggler for Mobile / Tablet -->
                 <button class="navbar-toggler border-0 shadow-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#civicNavbarCollapse" aria-controls="civicNavbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!-- Navigation Links & Right Utilities -->
                 <div class="collapse navbar-collapse" id="civicNavbarCollapse">
-                    <!-- Central Nav Links -->
                     <ul class="navbar-nav me-auto mb-2 mb-xl-0 align-items-xl-center gap-1">
-                        <!-- 1. Dashboard -->
                         <li class="nav-item">
                             <a class="nav-link-topbar @(isDashboardActive ? "active" : "")" asp-controller="Home" asp-action="Index">
                                 <svg class="nav-icon-sm" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -55,7 +49,6 @@
                             </a>
                         </li>
 
-                        <!-- 2. Operations Dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link-topbar dropdown-toggle @(isOperationsActive ? "active" : "")" href="#" id="operationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg class="nav-icon-sm" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
@@ -83,7 +76,6 @@
                             </ul>
                         </li>
 
-                        <!-- 3. Logistics Dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link-topbar dropdown-toggle @(isLogisticsActive ? "active" : "")" href="#" id="logisticsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg class="nav-icon-sm" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -111,7 +103,6 @@
                             </ul>
                         </li>
 
-                        <!-- 4. Reports Dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link-topbar dropdown-toggle @(isReportsActive ? "active" : "")" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg class="nav-icon-sm" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -134,15 +125,12 @@
                         </li>
                     </ul>
 
-                    <!-- Right Utilities -->
                     <div class="d-flex flex-wrap align-items-center gap-2 pt-2 pt-xl-0">
-                        <!-- Live System Status -->
                         <div class="gateway-status-pill d-none d-xxl-inline-flex align-items-center me-1">
                             <span class="status-indicator-dot me-2"></span>
                             <span>Gateway: Online</span>
                         </div>
 
-                        <!-- + Quick Action Dropdown -->
                         <div class="dropdown">
                             <button class="btn-topbar-action dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 + Quick Action
@@ -157,7 +145,6 @@
                             </ul>
                         </div>
 
-                        <!-- User Profile Authentication Block -->
                         @{
                             var username = Context.Session.GetString("Username");
                             var fullName = Context.Session.GetString("FullName") ?? username;
@@ -190,9 +177,7 @@
         </nav>
     </header>
 
-    <!-- Main Viewport Area (Full Available Width) -->
     <main class="civic-main-viewport container-fluid px-3 px-lg-5 py-4" role="main">
-        <!-- Toast Notifications -->
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="civic-toast civic-toast-success alert alert-dismissible fade show mb-3" role="alert">
@@ -222,7 +207,6 @@
         @RenderBody()
     </main>
 
-    <!-- Clean Municipal Footer -->
     <footer class="civic-portal-footer mt-auto">
         <div class="container-fluid civic-footer-container px-3 px-lg-4 d-flex flex-wrap justify-content-between align-items-center py-3">
             <div class="footer-meta d-flex align-items-center gap-2">
@@ -239,7 +223,6 @@
         </div>
     </footer>
 
-    <!-- Generic Confirmation Modal -->
     <div class="modal fade" id="civicConfirmModal" tabindex="-1" aria-labelledby="civicConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
