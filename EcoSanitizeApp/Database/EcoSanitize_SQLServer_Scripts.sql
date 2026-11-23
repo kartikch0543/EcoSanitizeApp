@@ -1,9 +1,3 @@
--- =========================================================================
--- EcoSanitize: Database Schema and Scripts
--- Municipal Waste Segregation, Disposal Tracking and Sanitization System
--- =========================================================================
-
--- 1. DATABASE CREATION
 IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'EcoSanitizeDB')
 BEGIN
     CREATE DATABASE EcoSanitizeDB;
@@ -13,9 +7,6 @@ GO
 USE EcoSanitizeDB;
 GO
 
--- 2. DDL: TABLE CREATION WITH CONSTRAINTS
-
--- Table 1: Waste Categories
 IF OBJECT_ID('dbo.WasteCategories', 'U') IS NOT NULL DROP TABLE dbo.WasteCategories;
 CREATE TABLE dbo.WasteCategories (
     CategoryId INT IDENTITY(1,1) PRIMARY KEY,
@@ -26,7 +17,6 @@ CREATE TABLE dbo.WasteCategories (
 );
 GO
 
--- Table 2: Disposal Requests
 IF OBJECT_ID('dbo.DisposalRequests', 'U') IS NOT NULL DROP TABLE dbo.DisposalRequests;
 CREATE TABLE dbo.DisposalRequests (
     Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -43,7 +33,6 @@ CREATE TABLE dbo.DisposalRequests (
 );
 GO
 
--- Table 3: Sanitization Audits
 IF OBJECT_ID('dbo.SanitizationAudits', 'U') IS NOT NULL DROP TABLE dbo.SanitizationAudits;
 CREATE TABLE dbo.SanitizationAudits (
     AuditId INT IDENTITY(1,1) PRIMARY KEY,
@@ -57,7 +46,6 @@ CREATE TABLE dbo.SanitizationAudits (
 );
 GO
 
--- 3. DML: INSERT STATEMENTS
 INSERT INTO dbo.WasteCategories (CategoryName, BinColorCode, HazardLevel, RecommendedTreatment) VALUES
 ('Organic', 'Green', 1, 'Aerobic composting and anaerobic biogas digestion'),
 ('Recyclable', 'Blue', 2, 'Mechanical sorting, shredding, and secondary material recovery'),
@@ -76,7 +64,6 @@ INSERT INTO dbo.SanitizationAudits (AreaName, CleanlinessScore, DisinfectantUsed
 ('Community Clinic Reception Area', 5, 'Quaternary Ammonium Compound', 'Inspector H. Sharma', 0, 'Pass');
 GO
 
--- 4. SQL QUERIES WITH CLAUSES, OPERATORS AND JOINS
 SELECT 
     d.Id AS RequestId,
     d.Location,
@@ -103,7 +90,6 @@ GROUP BY c.CategoryName
 HAVING SUM(d.EstimatedWeightKg) > 20.0;
 GO
 
--- 5. SQL VIEWS
 IF OBJECT_ID('dbo.vw_ActiveHighPriorityDisposals', 'V') IS NOT NULL DROP VIEW dbo.vw_ActiveHighPriorityDisposals;
 GO
 CREATE VIEW dbo.vw_ActiveHighPriorityDisposals
@@ -137,7 +123,6 @@ FROM dbo.SanitizationAudits
 WHERE RequiresFollowUp = 1;
 GO
 
--- 6. STORED PROCEDURES
 IF OBJECT_ID('dbo.sp_GetDisposalsByPriority', 'P') IS NOT NULL DROP PROCEDURE dbo.sp_GetDisposalsByPriority;
 GO
 CREATE PROCEDURE dbo.sp_GetDisposalsByPriority
