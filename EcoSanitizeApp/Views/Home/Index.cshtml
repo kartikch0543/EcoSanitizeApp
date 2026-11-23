@@ -1,30 +1,32 @@
 ﻿@model EcoSanitizeApp.Models.DashboardSummary
 @{
     ViewData["Title"] = "Operations Dashboard";
+    var recentRequests = ViewBag.RecentRequests as List<EcoSanitizeApp.Models.DisposalRequest> ?? new();
+    var recentComplaints = ViewBag.RecentComplaints as List<EcoSanitizeApp.Models.SanitationComplaint> ?? new();
 }
 
-<!-- Hero Section (Restrained Civic Palette) -->
+<!-- Hero Banner: Forest Green & Emerald Authority -->
 <div class="hero-civic-card">
     <div class="row align-items-center">
         <div class="col-lg-8 mb-4 mb-lg-0">
             <div class="hero-dept-tag">
-                Municipal Operations &bull; Sanitation Division
+                Municipal Sanitation & Waste Logistics Directorate
             </div>
             <h1 class="hero-civic-title">
                 EcoSanitize Portal
             </h1>
             <p class="hero-civic-subtitle">
-                Urban waste segregation management, disposal logistics dispatch, and facility sanitization inspections.
+                Comprehensive municipal portal for urban waste segregation enforcement, fleet collection dispatch, public hygiene audits, and citizen grievance resolution.
             </p>
             <div class="d-flex flex-wrap gap-2 pt-1">
                 <a class="btn-civic-accent" asp-controller="Disposal" asp-action="Create">
-                    + Log Waste Disposal Request
+                    + Log Disposal Request
+                </a>
+                <a class="btn-civic-outline" asp-controller="Complaint" asp-action="Create">
+                    + File Citizen Grievance
                 </a>
                 <a class="btn-civic-outline" asp-controller="Sanitization" asp-action="Create">
-                    Record Sanitization Audit
-                </a>
-                <a class="btn-civic-outline" asp-controller="Home" asp-action="SegregationGuide">
-                    Segregation Rules
+                    + Record Sanitization Audit
                 </a>
             </div>
         </div>
@@ -35,138 +37,272 @@
                 <div class="stat-value-large">
                     @Model.TotalWeightKg <span class="stat-unit-text">kg</span>
                 </div>
-                <div class="progress mb-2" style="height: 6px;">
-                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                <div class="progress mb-2" style="height: 7px; background-color: #e2e8f0;">
+                    <div class="progress-bar bg-success" style="width: @Model.RecyclingRatePercent%"></div>
                 </div>
-                <div class="small text-muted">
-                    Active municipal collection queue
+                <div class="d-flex justify-content-between small text-muted">
+                    <span>Recyclable Diversion: <strong>@Model.RecyclableWeightKg kg</strong></span>
+                    <span class="text-success fw-bold">@Model.RecyclingRatePercent%</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 3 Metric Cards (Rectangular, Civic Style) -->
+<!-- 4 Key Municipal Metric Cards -->
 <div class="row g-3 mb-4">
-    <!-- Card 1 -->
-    <div class="col-md-4">
+    <div class="col-sm-6 col-xl-3">
         <div class="metric-card-civic">
             <div>
-                <span class="metric-title-small">Total Disposal Requests</span>
-                <div class="metric-digit-large text-primary">
-                    @Model.TotalRequests
+                <div class="metric-header">
+                    <span class="metric-title-small">Collection Queue</span>
+                    <span class="badge bg-light text-dark border">@Model.TotalRequests Total</span>
                 </div>
-            </div>
-            <a asp-controller="Disposal" asp-action="Index" class="btn-metric-route text-primary">
-                View All Requests &rarr;
-            </a>
-        </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="col-md-4">
-        <div class="metric-card-civic">
-            <div>
-                <span class="metric-title-small">Pending Collection</span>
-                <div class="metric-digit-large text-warning">
+                <div class="metric-digit-large text-primary">
                     @Model.PendingRequests
                 </div>
+                <div class="small text-secondary mb-3">Pending pickup dispatch</div>
             </div>
-            <a href="/Disposal" class="btn-metric-route text-warning">
-                Review Pending Queue &rarr;
+            <a asp-controller="Disposal" asp-action="Index" class="btn-metric-route">
+                Review Disposal Queue &rarr;
             </a>
         </div>
     </div>
 
-    <!-- Card 3 -->
-    <div class="col-md-4">
+    <div class="col-sm-6 col-xl-3">
         <div class="metric-card-civic">
             <div>
-                <span class="metric-title-small">Emergency / High Priority</span>
-                <div class="metric-digit-large text-danger">
-                    @Model.HighPriorityRequests
+                <div class="metric-header">
+                    <span class="metric-title-small">Citizen Grievances</span>
+                    <span class="badge bg-light text-danger border">@Model.PendingComplaints Open</span>
                 </div>
+                <div class="metric-digit-large text-danger">
+                    @Model.PendingComplaints
+                </div>
+                <div class="small text-secondary mb-3">@Model.ResolvedComplaints of @Model.TotalComplaints resolved</div>
             </div>
-            <a href="/Disposal?priority=High" class="btn-metric-route text-danger">
-                Urgent Queue &rarr;
+            <a asp-controller="Complaint" asp-action="Index" class="btn-metric-route">
+                Manage Complaints &rarr;
+            </a>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+        <div class="metric-card-civic">
+            <div>
+                <div class="metric-header">
+                    <span class="metric-title-small">Field Workers</span>
+                    <span class="badge bg-light text-success border">On Duty</span>
+                </div>
+                <div class="metric-digit-large text-success">
+                    @Model.ActiveWorkersCount
+                </div>
+                <div class="small text-secondary mb-3">@Model.TotalSchedulesCount active route timetables</div>
+            </div>
+            <a asp-controller="Worker" asp-action="Index" class="btn-metric-route">
+                View Worker Roster &rarr;
+            </a>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+        <div class="metric-card-civic">
+            <div>
+                <div class="metric-header">
+                    <span class="metric-title-small">Sanitization Audits</span>
+                    <span class="badge bg-light text-dark border">@Model.TotalAudits Logged</span>
+                </div>
+                <div class="metric-digit-large @(Model.FollowUpAuditsCount > 0 ? "text-warning" : "text-success")">
+                    @Model.FollowUpAuditsCount
+                </div>
+                <div class="small text-secondary mb-3">Facilities requiring follow-up cleaning</div>
+            </div>
+            <a asp-controller="Sanitization" asp-action="Index" class="btn-metric-route">
+                Inspect Audit Logs &rarr;
             </a>
         </div>
     </div>
 </div>
 
-<!-- 3 Solution Pillars -->
+<!-- Operational Split: Recent Disposal Queue & Grievance Complaints -->
+<div class="row g-4 mb-4">
+    <!-- Left Column: Recent Disposal Queue -->
+    <div class="col-lg-7">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Active Collection Dispatch</span>
+                <a asp-controller="Disposal" asp-action="Index" class="small text-decoration-none fw-semibold">View All (@Model.TotalRequests) &rarr;</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 55px;">ID</th>
+                            <th>Location</th>
+                            <th>Stream</th>
+                            <th>Weight</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in recentRequests)
+                        {
+                            string dotClass = item.Category switch
+                            {
+                                "Organic" => "dot-organic",
+                                "Recyclable" => "dot-recyclable",
+                                "Hazardous" => "dot-hazardous",
+                                "Sanitary" => "dot-sanitary",
+                                "E-Waste" => "dot-ewaste",
+                                _ => ""
+                            };
+
+                            string statusClass = item.Status switch
+                            {
+                                "Pending" => "badge-status-pending",
+                                "In-Transit" => "badge-status-transit",
+                                "Disposed" => "badge-status-disposed",
+                                _ => ""
+                            };
+
+                            <tr>
+                                <td class="fw-bold text-muted">#@item.Id</td>
+                                <td class="fw-semibold">
+                                    <a asp-controller="Disposal" asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none text-dark">
+                                        @item.Location
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="stream-dot @dotClass"></span>@item.Category
+                                </td>
+                                <td>@item.EstimatedWeightKg kg</td>
+                                <td>
+                                    <span class="@statusClass">@item.Status</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Recent Grievances -->
+    <div class="col-lg-5">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Citizen Sanitation Grievances</span>
+                <a asp-controller="Complaint" asp-action="Index" class="small text-decoration-none fw-semibold">View All (@Model.TotalComplaints) &rarr;</a>
+            </div>
+            <div class="panel-civic-body p-0">
+                <div class="list-group list-group-flush">
+                    @foreach (var complaint in recentComplaints)
+                    {
+                        string badgeClass = complaint.Status switch
+                        {
+                            "Pending" => "badge-status-pending",
+                            "In-Progress" => "badge-status-transit",
+                            _ => "badge-status-disposed"
+                        };
+
+                        <a asp-controller="Complaint" asp-action="Details" asp-route-id="@complaint.Id" class="list-group-item list-group-item-action p-3">
+                            <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                                <span class="fw-semibold text-truncate me-2" style="max-width: 260px;">@complaint.Title</span>
+                                <span class="@badgeClass" style="font-size: 0.72rem;">@complaint.Status</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center small text-muted">
+                                <span><span class="text-dark fw-medium">@complaint.Category</span> &bull; @complaint.WardZone</span>
+                                <span>@complaint.ReportedDate.ToString("MMM dd")</span>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4 Solution Pillars -->
 <div class="mb-3">
-    <h2 class="h5 fw-bold mb-1">Operational Modules</h2>
-    <p class="text-secondary small mb-0">Core workflows for waste segregation compliance, logistics dispatch, and facility hygiene.</p>
+    <h2 class="h5 fw-bold mb-1">Municipal Operations Modules</h2>
+    <p class="text-secondary small mb-0">Core workflows for source segregation compliance, vehicle logistics dispatch, worker roster management, and public hygiene.</p>
 </div>
 
 <div class="row g-3">
     <!-- Module 1: Waste Segregation -->
-    <div class="col-md-4">
-        <div class="panel-civic h-100">
+    <div class="col-md-3">
+        <div class="panel-civic h-100 d-flex flex-column justify-content-between">
             <div class="panel-civic-header d-flex justify-content-between align-items-center">
-                <span>1. Waste Segregation</span>
+                <span>1. Segregation Rules</span>
                 <span class="badge bg-secondary">Streams</span>
             </div>
             <div class="panel-civic-body">
                 <p class="small text-secondary mb-3">
-                    Classifies municipal waste into 4 designated streams: Organic (Green Wet), Recyclable (Blue Dry), Hazardous (Red Toxic), and Sanitary (Yellow Biohazard).
+                    Classifies municipal waste into 5 designated streams: Organic, Recyclable, Hazardous, Sanitary, and E-Waste.
                 </p>
                 <div class="small text-secondary mb-3">
                     <span class="me-2"><span class="stream-dot dot-organic"></span>Organic</span>
                     <span class="me-2"><span class="stream-dot dot-recyclable"></span>Recyclable</span>
                     <span class="me-2"><span class="stream-dot dot-hazardous"></span>Hazardous</span>
-                    <span><span class="stream-dot dot-sanitary"></span>Sanitary</span>
+                    <span class="me-2"><span class="stream-dot dot-sanitary"></span>Sanitary</span>
+                    <span><span class="stream-dot dot-ewaste"></span>E-Waste</span>
                 </div>
                 <a class="btn-civic-secondary w-100" asp-controller="Home" asp-action="SegregationGuide">
-                    Review Segregation Rules &rarr;
+                    Review Rules &rarr;
                 </a>
             </div>
         </div>
     </div>
 
     <!-- Module 2: Disposal Tracking -->
-    <div class="col-md-4">
-        <div class="panel-civic h-100">
+    <div class="col-md-3">
+        <div class="panel-civic h-100 d-flex flex-column justify-content-between">
             <div class="panel-civic-header d-flex justify-content-between align-items-center">
                 <span>2. Disposal Tracking</span>
                 <span class="badge bg-secondary">Logistics</span>
             </div>
             <div class="panel-civic-body">
                 <p class="small text-secondary mb-3">
-                    Monitors pickup requests from submission to final destination. Coordinates driver assignments, urgency triage, and collection status updates.
+                    Monitors pickup requests from submission to final destination with driver assignments, urgency triage, and collection updates.
                 </p>
-                <div class="d-flex align-items-center gap-2 mb-3 small">
-                    <span class="badge-status-pending">Pending</span>
-                    <span>&rarr;</span>
-                    <span class="badge-status-transit">In-Transit</span>
-                    <span>&rarr;</span>
-                    <span class="badge-status-disposed">Disposed</span>
-                </div>
                 <a class="btn-civic-secondary w-100" asp-controller="Disposal" asp-action="Index">
-                    Open Disposal Queue &rarr;
+                    Open Queue &rarr;
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Module 3: Sanitization Audits -->
-    <div class="col-md-4">
-        <div class="panel-civic h-100">
+    <!-- Module 3: Grievance Management -->
+    <div class="col-md-3">
+        <div class="panel-civic h-100 d-flex flex-column justify-content-between">
             <div class="panel-civic-header d-flex justify-content-between align-items-center">
-                <span>3. Sanitization Audits</span>
-                <span class="badge bg-secondary">Compliance</span>
+                <span>3. Citizen Grievances</span>
+                <span class="badge bg-secondary">Sanitation</span>
             </div>
             <div class="panel-civic-body">
                 <p class="small text-secondary mb-3">
-                    Audits cleanliness of public facilities, restrooms, and transit stations. Records chemical disinfectants and automatically triggers follow-up cleaning orders.
+                    Citizen complaints for overflowing public bins, stagnant drainage, and illegal dumping with photo verification and worker assignment.
                 </p>
-                <div class="d-flex justify-content-between align-items-center mb-3 p-2 bg-light rounded border">
-                    <span class="small text-muted">Audits Logged: <strong>@Model.TotalAudits</strong></span>
-                    <span class="small text-danger">Action Required: <strong>@Model.FollowUpAuditsCount</strong></span>
-                </div>
-                <a class="btn-civic-secondary w-100" asp-controller="Sanitization" asp-action="Index">
-                    Open Sanitization Logs &rarr;
+                <a class="btn-civic-secondary w-100" asp-controller="Complaint" asp-action="Index">
+                    Manage Grievances &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 4: Analytics & Exports -->
+    <div class="col-md-3">
+        <div class="panel-civic h-100 d-flex flex-column justify-content-between">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
+                <span>4. Analytics & Reports</span>
+                <span class="badge bg-secondary">Export</span>
+            </div>
+            <div class="panel-civic-body">
+                <p class="small text-secondary mb-3">
+                    Collection volume charts, recycling diversion metrics, CSV data exports, and official printable municipal inspection audits.
+                </p>
+                <a class="btn-civic-secondary w-100" asp-controller="Analytics" asp-action="Index">
+                    View Analytics &rarr;
                 </a>
             </div>
         </div>

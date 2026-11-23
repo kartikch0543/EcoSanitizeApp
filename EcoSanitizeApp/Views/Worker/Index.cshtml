@@ -1,0 +1,94 @@
+@model IEnumerable<EcoSanitizeApp.Models.SanitationWorker>
+@{
+    ViewData["Title"] = "Sanitation Workers Roster";
+    var activeStatus = ViewData["ActiveStatus"] as string ?? "";
+    var activeZone = ViewData["ActiveZone"] as string ?? "";
+    var searchQuery = ViewData["SearchQuery"] as string ?? "";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h4 fw-bold mb-1">Sanitation Worker & Fleet Management</h1>
+        <p class="text-secondary small mb-0">Total personnel: <strong>@ViewBag.TotalCount</strong> | Active / On-Duty: <strong class="text-success">@ViewBag.ActiveCount</strong></p>
+    </div>
+    <a asp-action="Create" class="btn-civic-primary">
+        + Register New Worker
+    </a>
+</div>
+
+<!-- Search & Filtering Card -->
+<div class="search-filter-card">
+    <form method="get" asp-action="Index" class="row g-2 align-items-center">
+        <div class="col-md-5">
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Search by name, employee code, or role..." value="@searchQuery" />
+        </div>
+        <div class="col-md-3">
+            <select name="zone" class="form-select form-select-sm">
+                <option value="">All Municipal Zones</option>
+                <option value="Zone 1 - North Market" selected="@(activeZone == "Zone 1 - North Market")">Zone 1 - North Market</option>
+                <option value="Zone 2 - Central Commercial" selected="@(activeZone == "Zone 2 - Central Commercial")">Zone 2 - Central Commercial</option>
+                <option value="Zone 3 - West Industrial" selected="@(activeZone == "Zone 3 - West Industrial")">Zone 3 - West Industrial</option>
+                <option value="Zone 4 - South Residential" selected="@(activeZone == "Zone 4 - South Residential")">Zone 4 - South Residential</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select form-select-sm">
+                <option value="">All Duty Statuses</option>
+                <option value="Active" selected="@(activeStatus == "Active")">Active</option>
+                <option value="On-Duty" selected="@(activeStatus == "On-Duty")">On-Duty</option>
+                <option value="On-Leave" selected="@(activeStatus == "On-Leave")">On-Leave</option>
+            </select>
+        </div>
+        <div class="col-md-1 d-grid">
+            <button type="submit" class="btn-civic-secondary py-1">Filter</button>
+        </div>
+    </form>
+</div>
+
+<!-- Worker Table -->
+<div class="table-portal-civic">
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 90px; white-space: nowrap;">Code</th>
+                <th style="min-width: 180px;">Worker Name</th>
+                <th style="width: 140px; white-space: nowrap;">Phone</th>
+                <th style="min-width: 180px;">Assigned Zone</th>
+                <th style="min-width: 190px;">Specialization</th>
+                <th style="width: 140px; white-space: nowrap;">Vehicle / Unit</th>
+                <th style="width: 100px; white-space: nowrap;">Status</th>
+                <th style="width: 120px; white-space: nowrap; text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var w in Model)
+            {
+                string statusBadge = w.Status switch
+                {
+                    "Active" => "badge-status-disposed",
+                    "On-Duty" => "badge-status-transit",
+                    _ => "badge-status-pending"
+                };
+
+                <tr>
+                    <td class="fw-bold text-muted" style="white-space: nowrap;">@w.WorkerCode</td>
+                    <td class="fw-semibold">@w.FullName</td>
+                    <td class="text-secondary small" style="white-space: nowrap;">@w.PhoneNumber</td>
+                    <td style="white-space: nowrap;">@w.AssignedZone</td>
+                    <td class="text-secondary small">@w.Specialization</td>
+                    <td class="text-secondary small" style="white-space: nowrap;">@(w.AssignedVehicle ?? "None")</td>
+                    <td style="white-space: nowrap;">
+                        <span class="@statusBadge">@w.Status</span>
+                    </td>
+                    <td style="white-space: nowrap; text-align: right;">
+                        <form asp-action="UpdateStatus" method="post" class="d-inline m-0">
+                            <input type="hidden" name="id" value="@w.Id" />
+                            <input type="hidden" name="status" value="@(w.Status == "Active" ? "On-Duty" : (w.Status == "On-Duty" ? "On-Leave" : "Active"))" />
+                            <button type="submit" class="btn-table-action" title="Toggle duty status">Toggle Status</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

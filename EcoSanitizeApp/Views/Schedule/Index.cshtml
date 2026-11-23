@@ -1,0 +1,91 @@
+@model IEnumerable<EcoSanitizeApp.Models.CollectionSchedule>
+@{
+    ViewData["Title"] = "Collection Schedules";
+    var activeDay = ViewData["ActiveDay"] as string ?? "";
+    var activeZone = ViewData["ActiveZone"] as string ?? "";
+    var activeStream = ViewData["ActiveStream"] as string ?? "";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h4 fw-bold mb-1">Collection Scheduling & Area Management</h1>
+        <p class="text-secondary small mb-0">Weekly municipal waste collection timetable across geographic sectors and designated streams</p>
+    </div>
+    <a asp-action="Create" class="btn-civic-primary">
+        + Add Route Timetable
+    </a>
+</div>
+
+<!-- Day of Week Filter Bar -->
+<div class="stream-filter-bar">
+    <span class="small fw-semibold text-secondary me-2">Schedule Day:</span>
+    <a href="@Url.Action("Index")" class="filter-tab @(string.IsNullOrEmpty(activeDay) ? "active" : "")">All Days</a>
+    <a href="@Url.Action("Index", new { day = "Daily", zone = activeZone, stream = activeStream })" class="filter-tab @(activeDay == "Daily" ? "active" : "")">Daily</a>
+    <a href="@Url.Action("Index", new { day = "Monday", zone = activeZone, stream = activeStream })" class="filter-tab @(activeDay == "Monday" ? "active" : "")">Monday</a>
+    <a href="@Url.Action("Index", new { day = "Tuesday", zone = activeZone, stream = activeStream })" class="filter-tab @(activeDay == "Tuesday" ? "active" : "")">Tuesday</a>
+    <a href="@Url.Action("Index", new { day = "Wednesday", zone = activeZone, stream = activeStream })" class="filter-tab @(activeDay == "Wednesday" ? "active" : "")">Wednesday</a>
+    <a href="@Url.Action("Index", new { day = "Thursday", zone = activeZone, stream = activeStream })" class="filter-tab @(activeDay == "Thursday" ? "active" : "")">Thursday</a>
+    <a href="@Url.Action("Index", new { day = "Friday", zone = activeZone, stream = activeStream })" class="filter-tab @(activeDay == "Friday" ? "active" : "")">Friday</a>
+</div>
+
+<!-- Schedules Table -->
+<div class="table-portal-civic">
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 140px; white-space: nowrap;">Day & Time</th>
+                <th style="min-width: 190px;">Ward / Area Zone</th>
+                <th style="width: 140px; white-space: nowrap;">Waste Stream</th>
+                <th style="width: 160px; white-space: nowrap;">Vehicle Unit</th>
+                <th style="min-width: 170px;">Lead Worker / Driver</th>
+                <th style="min-width: 220px;">Route Sweep Details</th>
+                <th style="width: 90px; white-space: nowrap;">Status</th>
+                <th style="width: 100px; white-space: nowrap; text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model)
+            {
+                string streamDot = s.WasteStream switch
+                {
+                    "Organic" => "dot-organic",
+                    "Recyclable" => "dot-recyclable",
+                    "Hazardous" => "dot-hazardous",
+                    "Sanitary" => "dot-sanitary",
+                    "E-Waste" => "dot-ewaste",
+                    _ => ""
+                };
+
+                <tr>
+                    <td style="white-space: nowrap;">
+                        <div class="fw-semibold text-dark">@s.CollectionDay</div>
+                        <div class="small text-secondary">@s.TimeSlot</div>
+                    </td>
+                    <td class="fw-semibold">@s.WardZone</td>
+                    <td style="white-space: nowrap;">
+                        <span class="stream-dot @streamDot"></span>@s.WasteStream
+                    </td>
+                    <td class="text-secondary small" style="white-space: nowrap;">@s.AssignedVehicle</td>
+                    <td class="fw-medium small">@s.AssignedWorker</td>
+                    <td class="small text-secondary">@(s.RouteDescription ?? "Standard perimeter sweep")</td>
+                    <td style="white-space: nowrap;">
+                        @if (s.IsActive)
+                        {
+                            <span class="badge-status-disposed">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge-status-pending">Paused</span>
+                        }
+                    </td>
+                    <td style="white-space: nowrap; text-align: right;">
+                        <form asp-action="Toggle" method="post" class="d-inline m-0">
+                            <input type="hidden" name="id" value="@s.Id" />
+                            <button type="submit" class="btn-table-action">@(s.IsActive ? "Pause" : "Activate")</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -15,9 +15,16 @@ namespace EcoSanitizeApp.Controllers
             _sanitizationService = sanitizationService;
         }
 
-        public IActionResult Index(string? category, string? priority, string? status)
+        public IActionResult Index(string? search, string? category, string? priority, string? status, int page = 1)
         {
             var requests = _sanitizationService.GetAllDisposalRequests();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var q = search.Trim().ToLower();
+                requests = requests.Where(r => r.Location.ToLower().Contains(q) || (r.AssignedCollector != null && r.AssignedCollector.ToLower().Contains(q))).ToList();
+                ViewData["SearchQuery"] = search;
+            }
 
             if (!string.IsNullOrEmpty(category))
             {
@@ -37,8 +44,18 @@ namespace EcoSanitizeApp.Controllers
                 ViewData["ActiveStatus"] = status;
             }
 
-            ViewBag.TotalCount = requests.Count();
-            return View(requests);
+            const int pageSize = 8;
+            int totalCount = requests.Count();
+            int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            page = Math.Max(1, Math.Min(page, Math.Max(1, totalPages)));
+
+            var pagedRequests = requests.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.TotalCount = totalCount;
+
+            return View(pagedRequests);
         }
 
         [HttpGet]
@@ -82,6 +99,7 @@ namespace EcoSanitizeApp.Controllers
                 "Organic" => new OrganicWaste(request.Id, request.Category, request.EstimatedWeightKg, request.Location),
                 "Hazardous" => new HazardousWaste(request.Id, request.Category, request.EstimatedWeightKg, request.Location),
                 "Sanitary" => new SanitaryWaste(request.Id, request.Category, request.EstimatedWeightKg, request.Location),
+                "E-Waste" => new ElectronicWaste(request.Id, request.Category, request.EstimatedWeightKg, request.Location),
                 _ => new RecyclableWaste(request.Id, request.Category, request.EstimatedWeightKg, request.Location)
             };
 
@@ -100,11 +118,24 @@ namespace EcoSanitizeApp.Controllers
             bool updated = _sanitizationService.UpdateDisposalStatus(id, status, collector);
             if (updated)
             {
-                TempData["SuccessMessage"] = $"Request #{id} status updated to '{status}'.";
+                TempData["SuccessMessage"] = $"Request #{id} status updated to {status}.";
             }
             else
             {
-                TempData["ErrorMessage"] = $"Request #{id} could not be updated.";
+                TempData["ErrorMessage"] = $"Disposal request #{id} could not be updated.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            bool deleted = _sanitizationService.DeleteDisposalRequest(id);
+            if (deleted)
+            {
+                TempData["SuccessMessage"] = $"Request #{id} has been removed from active queue.";
             }
 
             return RedirectToAction(nameof(Index));

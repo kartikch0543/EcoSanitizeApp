@@ -20,6 +20,7 @@ namespace EcoSanitizeApp.Controllers
             var summary = _sanitizationService.GetDashboardSummary();
             ViewBag.RecentRequests = _sanitizationService.GetAllDisposalRequests().Take(5).ToList();
             ViewBag.RecentAudits = _sanitizationService.GetAllSanitizationAudits().Take(3).ToList();
+            ViewBag.RecentComplaints = _sanitizationService.GetAllComplaints().Take(4).ToList();
 
             return View(summary);
         }

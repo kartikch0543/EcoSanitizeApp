@@ -1,36 +1,53 @@
 /* =========================================================================
-   EcoSanitize: Municipal Operations Portal Stylesheet
-   Human-Engineered Civic Enterprise System Theme
+   EcoSanitize: Municipal Waste Management & Sanitization System
+   Modern Professional Civic Dashboard Stylesheet
+   Forest Green & Emerald Design System
    ========================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
+    /* Color Palette: Forest Green & Emerald Theme */
+    --brand-forest: #14532d;
+    --brand-forest-dark: #0f391f;
+    --brand-forest-hover: #166534;
+    --brand-emerald: #10b981;
+    --brand-emerald-light: #ecfdf5;
+    --brand-emerald-dark: #059669;
+
+    --brand-slate: #1e293b;
+    --brand-slate-light: #334155;
+    --brand-accent-amber: #d97706;
+
+    /* Backgrounds & Surfaces */
     --bg-page: #f8fafc;
     --bg-surface: #ffffff;
-    --text-primary: #0f172a;
-    --text-secondary: #334155;
-    --text-muted: #64748b;
+    --bg-surface-subtle: #f1f5f9;
 
+    /* Typography Colors */
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-on-dark: #ffffff;
+
+    /* Borders */
     --border-color: #cbd5e1;
     --border-subtle: #e2e8f0;
 
-    --brand-forest: #1b4332;
-    --brand-forest-hover: #143326;
-    --brand-slate: #1e293b;
-    --brand-slate-hover: #0f172a;
-    --brand-accent-amber: #d97706;
-    --brand-accent-hover: #b45309;
-
+    /* Waste Stream Classification Tokens */
     --color-organic: #16a34a;
     --color-recyclable: #2563eb;
     --color-hazardous: #dc2626;
     --color-sanitary: #d97706;
+    --color-ewaste: #ea580c;
 
-    --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* Geometry & Dimensions */
+    --sidebar-width: 260px;
+    --topbar-height: 64px;
+    --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Base & Layout */
+/* Base Reset & Box Sizing */
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -39,94 +56,355 @@ html, body {
     height: 100%;
 }
 
-body {
+body.civic-portal-body {
     background-color: var(--bg-page);
     color: var(--text-primary);
     font-family: var(--font-stack);
     font-size: 0.9375rem;
     line-height: 1.55;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
 
-.main-content {
-    flex: 1 0 auto;
+/* =========================================================================
+   APP LAYOUT: SIDEBAR + VIEWPORT WRAPPER
+   ========================================================================= */
+.app-layout-wrapper {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
 }
 
 /* =========================================================================
-   NAVBAR: Clean, Professional Civic Header
+   SIDEBAR NAVIGATION
    ========================================================================= */
-.navbar-civic {
-    background-color: #ffffff;
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 0.75rem 0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+.app-sidebar {
+    width: var(--sidebar-width);
+    background-color: #0f291e;
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    transition: transform 0.25s ease-in-out;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.brand-civic {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--text-primary) !important;
+.sidebar-header {
+    height: var(--topbar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #0b1f17;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    letter-spacing: -0.02em;
+    color: #ffffff !important;
+    gap: 0.75rem;
 }
 
-.brand-badge {
-    font-size: 0.7rem;
+.brand-emblem {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--brand-emerald), var(--brand-forest));
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.brand-subtitle {
+    font-size: 0.68rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--text-muted);
-    border: 1px solid var(--border-subtle);
-    padding: 0.15rem 0.45rem;
-    border-radius: 4px;
-    margin-left: 0.5rem;
-    background-color: #f8fafc;
+    color: #94a3b8;
 }
 
-.nav-link-civic {
-    color: var(--text-secondary) !important;
+.sidebar-close-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.sidebar-menu-wrapper {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1rem 0.75rem;
+}
+
+.sidebar-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    padding: 0.5rem 0.6rem 0.35rem 0.6rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.nav-item-civic {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 6px;
     font-size: 0.875rem;
     font-weight: 500;
-    padding: 0.4rem 0.8rem !important;
-    border-radius: 4px;
+    color: #cbd5e1 !important;
     text-decoration: none;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: all 0.15s ease;
 }
 
-.nav-link-civic:hover {
-    color: var(--text-primary) !important;
-    background-color: #f1f5f9;
+.nav-item-civic .nav-icon {
+    flex-shrink: 0;
+    color: #94a3b8;
+    transition: color 0.15s ease;
 }
 
-.nav-link-civic.active {
-    color: var(--brand-forest) !important;
+.nav-item-civic:hover {
+    background-color: rgba(255, 255, 255, 0.07);
+    color: #ffffff !important;
+}
+
+.nav-item-civic:hover .nav-icon {
+    color: var(--brand-emerald);
+}
+
+.nav-item-civic.active {
+    background-color: var(--brand-forest);
+    color: #ffffff !important;
     font-weight: 600;
-    background-color: #f1f5f9;
+}
+
+.nav-item-civic.active .nav-icon {
+    color: var(--brand-emerald);
+}
+
+.sidebar-footer {
+    padding: 0.85rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #0b1f17;
+}
+
+.sidebar-system-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.status-indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--brand-emerald);
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
 }
 
 /* =========================================================================
-   HERO BANNER: Restrained, Authoritative Civic Banner
+   MAIN VIEWPORT & TOPBAR
+   ========================================================================= */
+.app-main-viewport {
+    flex: 1 1 auto;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: margin-left 0.25s ease-in-out;
+}
+
+.app-topbar {
+    height: var(--topbar-height);
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sidebar-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: #f1f5f9;
+    color: var(--text-primary);
+}
+
+.topbar-breadcrumb {
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.breadcrumb-dept {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.breadcrumb-separator {
+    color: #cbd5e1;
+}
+
+.breadcrumb-current {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.btn-civic-quickaction {
+    background-color: var(--brand-forest);
+    border: 1px solid var(--brand-forest);
+    color: #ffffff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.45rem 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-civic-quickaction:hover,
+.btn-civic-quickaction:focus {
+    background-color: var(--brand-forest-hover);
+    color: #ffffff;
+}
+
+/* User Profile Pill */
+.user-pill {
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: #ecfdf5;
+    color: var(--brand-forest);
+    font-weight: 700;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #a7f3d0;
+}
+
+.user-meta {
+    margin-left: 0.6rem;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.user-role {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.btn-logout {
+    color: #94a3b8;
+    padding: 0.25rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.btn-logout:hover {
+    color: #dc2626;
+}
+
+/* Content Area */
+.app-content-area {
+    flex: 1 0 auto;
+    padding: 1.75rem 2rem;
+    max-width: 1440px;
+    width: 100%;
+}
+
+/* =========================================================================
+   HERO / BANNER STYLES
    ========================================================================= */
 .hero-civic-card {
     background-color: var(--brand-forest);
     color: #ffffff;
     border-radius: 6px;
-    padding: 2.25rem 2rem;
+    padding: 2rem 2.25rem;
     border: 1px solid #143326;
     margin-bottom: 1.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .hero-dept-tag {
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #a7f3d0;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.45rem;
 }
 
 .hero-civic-title {
@@ -139,24 +417,23 @@ body {
 }
 
 .hero-civic-subtitle {
-    font-size: 0.975rem;
+    font-size: 0.95rem;
     color: #d1fae5;
     margin-bottom: 1.5rem;
-    max-width: 650px;
+    max-width: 680px;
 }
 
-/* Stat Box inside Hero */
 .hero-civic-stat {
     background-color: #ffffff;
     border-radius: 6px;
-    padding: 1.35rem 1.25rem;
+    padding: 1.25rem;
     color: var(--text-primary);
     border: 1px solid var(--border-subtle);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .stat-label-small {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -165,21 +442,106 @@ body {
 }
 
 .stat-value-large {
-    font-size: 2.4rem;
+    font-size: 2.25rem;
     font-weight: 800;
     color: var(--brand-forest);
     line-height: 1.1;
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.4rem;
 }
 
 .stat-unit-text {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     color: var(--text-muted);
 }
 
 /* =========================================================================
-   RECTANGULAR BUTTONS ACROSS PORTAL (4px radius, no pills)
+   METRIC TILES: CRISP RECTANGULAR CARDS
+   ========================================================================= */
+.metric-card-civic {
+    background-color: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 1.25rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.metric-card-civic:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+}
+
+.metric-title-small {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.metric-digit-large {
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0.35rem 0 0.85rem 0;
+}
+
+.btn-metric-route {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.42rem 0.75rem;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    border: 1px solid var(--border-color);
+    background-color: #ffffff;
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+}
+
+.btn-metric-route:hover {
+    background-color: #f8fafc;
+    color: var(--text-primary);
+    border-color: #94a3b8;
+}
+
+/* =========================================================================
+   PANELS & CONTAINERS
+   ========================================================================= */
+.panel-civic {
+    background-color: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.panel-civic-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.85rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.panel-civic-body {
+    padding: 1.25rem;
+}
+
+/* =========================================================================
+   BUTTONS: SHARP / 4PX RECTANGULAR, NO PILL BUTTONS
    ========================================================================= */
 .btn-civic-primary {
     background-color: var(--brand-forest);
@@ -193,6 +555,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.4rem;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -205,7 +568,7 @@ body {
 
 .btn-civic-accent {
     background-color: var(--brand-accent-amber);
-    border: 1px solid var(--brand-accent-hover);
+    border: 1px solid #b45309;
     color: #ffffff;
     font-size: 0.875rem;
     font-weight: 600;
@@ -215,11 +578,12 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.4rem;
     transition: background-color 0.15s ease;
 }
 
 .btn-civic-accent:hover {
-    background-color: var(--brand-accent-hover);
+    background-color: #b45309;
     color: #ffffff;
 }
 
@@ -255,6 +619,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.4rem;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -264,108 +629,64 @@ body {
     border-color: #94a3b8;
 }
 
-/* =========================================================================
-   METRIC TILES: Spacious, Clean, Humanized
-   ========================================================================= */
-.metric-card-civic {
-    background-color: #ffffff;
-    border: 1px solid var(--border-subtle);
-    border-radius: 6px;
-    padding: 1.25rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-    transition: border-color 0.15s ease;
-}
-
-.metric-card-civic:hover {
-    border-color: #cbd5e1;
-}
-
-.metric-title-small {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-}
-
-.metric-digit-large {
-    font-size: 2.35rem;
-    font-weight: 800;
-    line-height: 1.1;
-    margin: 0.35rem 0 0.85rem 0;
-}
-
-.btn-metric-route {
+/* Compact Table Action Buttons */
+.btn-table-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.28rem 0.65rem;
     font-size: 0.8125rem;
-    font-weight: 600;
-    padding: 0.42rem 0.75rem;
+    font-weight: 500;
     border-radius: 4px;
     text-decoration: none;
-    text-align: center;
-    display: block;
     border: 1px solid var(--border-color);
     background-color: #ffffff;
     color: var(--text-secondary);
-    transition: all 0.15s ease;
+    line-height: 1.25;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.btn-metric-route:hover {
-    background-color: #f8fafc;
-    color: var(--text-primary);
+.btn-table-action:hover {
+    background-color: #f1f5f9;
     border-color: #94a3b8;
+    color: var(--text-primary);
+}
+
+.btn-table-action.action-transit {
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+    background-color: #eff6ff;
+}
+
+.btn-table-action.action-transit:hover {
+    background-color: #dbeafe;
+    border-color: #93c5fd;
+}
+
+.btn-table-action.action-disposed {
+    color: #15803d;
+    border-color: #bbf7d0;
+    background-color: #f0fdf4;
+}
+
+.btn-table-action.action-disposed:hover {
+    background-color: #dcfce7;
+    border-color: #86efac;
 }
 
 /* =========================================================================
-   PANELS & CARDS
+   SEARCH, FILTERS & PAGINATION BAR
    ========================================================================= */
-.panel-civic {
+.search-filter-card {
     background-color: #ffffff;
     border: 1px solid var(--border-subtle);
     border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 
-.panel-civic-header {
-    background-color: #ffffff;
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 0.85rem 1.25rem;
-    font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.panel-civic-body {
-    padding: 1.25rem;
-}
-
-/* Module cards on dashboard */
-.module-card {
-    background-color: #ffffff;
-    border: 1px solid var(--border-subtle);
-    border-radius: 6px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.module-card-header {
-    padding: 1rem 1.25rem 0.5rem 1.25rem;
-    font-weight: 700;
-    font-size: 1rem;
-}
-
-.module-card-body {
-    padding: 0.5rem 1.25rem 1.25rem 1.25rem;
-    flex: 1 0 auto;
-}
-
-/* =========================================================================
-   STREAM FILTER BAR: CLEAN RECTANGULAR TABS
-   ========================================================================= */
 .stream-filter-bar {
     display: flex;
     flex-wrap: wrap;
@@ -400,10 +721,19 @@ body {
 }
 
 .filter-tab.active {
-    background-color: var(--brand-slate);
+    background-color: var(--brand-forest);
     color: #ffffff;
-    border-color: var(--brand-slate);
+    border-color: var(--brand-forest);
     font-weight: 600;
+}
+
+.pagination-portal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+    background-color: #ffffff;
 }
 
 /* =========================================================================
@@ -461,25 +791,9 @@ body {
 .dot-recyclable { background-color: var(--color-recyclable); }
 .dot-hazardous { background-color: var(--color-hazardous); }
 .dot-sanitary { background-color: var(--color-sanitary); }
+.dot-ewaste { background-color: var(--color-ewaste); }
 
-/* Priority plain text styling */
-.priority-emergency,
-.priority-high {
-    color: #dc2626;
-    font-weight: 600;
-}
-
-.priority-medium {
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
-.priority-low {
-    color: var(--text-muted);
-    font-weight: 400;
-}
-
-/* Status Badges: subtle background and border */
+/* Status Badges */
 .badge-status-pending {
     display: inline-block;
     white-space: nowrap !important;
@@ -492,7 +806,8 @@ body {
     border-radius: 4px;
 }
 
-.badge-status-transit {
+.badge-status-transit,
+.badge-status-in-progress {
     display: inline-block;
     white-space: nowrap !important;
     background-color: #dbeafe;
@@ -504,7 +819,8 @@ body {
     border-radius: 4px;
 }
 
-.badge-status-disposed {
+.badge-status-disposed,
+.badge-status-resolved {
     display: inline-block;
     white-space: nowrap !important;
     background-color: #dcfce7;
@@ -516,7 +832,6 @@ body {
     border-radius: 4px;
 }
 
-/* Sanitization Outcome Badges (the ONLY column with badge in audits) */
 .badge-outcome-pass {
     display: inline-block;
     white-space: nowrap !important;
@@ -541,53 +856,27 @@ body {
     border-radius: 4px;
 }
 
-/* Compact Table Action Buttons */
-.btn-table-action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.28rem 0.65rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    border-radius: 4px;
-    text-decoration: none;
-    border: 1px solid var(--border-color);
-    background-color: #ffffff;
+/* Priority styling */
+.priority-emergency,
+.priority-critical,
+.priority-high {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.priority-medium {
     color: var(--text-secondary);
-    line-height: 1.25;
-    cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    font-weight: 500;
 }
 
-.btn-table-action:hover {
-    background-color: #f1f5f9;
-    border-color: #94a3b8;
-    color: var(--text-primary);
+.priority-low {
+    color: var(--text-muted);
+    font-weight: 400;
 }
 
-.btn-table-action.action-transit {
-    color: #1d4ed8;
-    border-color: #bfdbfe;
-    background-color: #eff6ff;
-}
-
-.btn-table-action.action-transit:hover {
-    background-color: #dbeafe;
-    border-color: #93c5fd;
-}
-
-.btn-table-action.action-disposed {
-    color: #15803d;
-    border-color: #bbf7d0;
-    background-color: #f0fdf4;
-}
-
-.btn-table-action.action-disposed:hover {
-    background-color: #dcfce7;
-    border-color: #86efac;
-}
-
-/* Forms */
+/* =========================================================================
+   FORMS & INPUTS
+   ========================================================================= */
 .form-label {
     font-size: 0.875rem;
     font-weight: 600;
@@ -605,13 +894,38 @@ body {
 
 .form-control:focus, .form-select:focus {
     border-color: var(--brand-forest);
-    box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.15);
+    box-shadow: 0 0 0 3px rgba(20, 83, 45, 0.15);
     outline: none;
 }
 
-/* Footer: Sticky, perfectly positioned */
-.portal-footer {
-    flex-shrink: 0;
+/* =========================================================================
+   TOAST NOTIFICATIONS
+   ========================================================================= */
+.civic-toast {
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.civic-toast-success {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+
+.civic-toast-danger {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+/* =========================================================================
+   FOOTER
+   ========================================================================= */
+.app-portal-footer {
     background-color: #ffffff;
     border-top: 1px solid var(--border-subtle);
     padding: 1.25rem 0;
@@ -620,13 +934,81 @@ body {
     color: var(--text-muted);
 }
 
-.portal-footer a {
+.app-portal-footer a {
     color: var(--text-secondary);
     text-decoration: none;
     margin-left: 1.25rem;
 }
 
-.portal-footer a:hover {
+.app-portal-footer a:hover {
     color: var(--text-primary);
     text-decoration: underline;
+}
+
+/* =========================================================================
+   RESPONSIVE OVERRIDES
+   ========================================================================= */
+@media (max-width: 991.98px) {
+    .app-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .app-sidebar.show {
+        transform: translateX(0);
+    }
+
+    .app-main-viewport {
+        margin-left: 0;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1035;
+        display: none;
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+    .app-content-area {
+        padding: 1.25rem 1rem;
+    }
+}
+
+/* =========================================================================
+   PRINTABLE STYLES FOR PDF AUDIT REPORTS
+   ========================================================================= */
+@media print {
+    .app-sidebar,
+    .app-topbar,
+    .app-portal-footer,
+    .no-print,
+    .btn,
+    .btn-civic-primary,
+    .btn-civic-secondary {
+        display: none !important;
+    }
+
+    .app-main-viewport {
+        margin-left: 0 !important;
+    }
+
+    .app-content-area {
+        padding: 0 !important;
+    }
+
+    body {
+        background-color: #ffffff !important;
+    }
+
+    .panel-civic, .table-portal-civic {
+        border: 1px solid #000000 !important;
+        box-shadow: none !important;
+    }
 }

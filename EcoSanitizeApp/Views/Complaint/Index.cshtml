@@ -1,0 +1,161 @@
+@model IEnumerable<EcoSanitizeApp.Models.SanitationComplaint>
+@{
+    ViewData["Title"] = "Sanitation Grievances";
+    var activeCategory = ViewData["ActiveCategory"] as string ?? "";
+    var activeStatus = ViewData["ActiveStatus"] as string ?? "";
+    var activeSeverity = ViewData["ActiveSeverity"] as string ?? "";
+    var searchQuery = ViewData["SearchQuery"] as string ?? "";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    int totalCount = ViewBag.TotalCount ?? 0;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h4 fw-bold mb-1">Sanitation Grievance Management</h1>
+        <p class="text-secondary small mb-0">Total active complaints: <strong>@totalCount</strong> | Review overflowing bins, drainage blocks, and public hygiene issues</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-controller="Analytics" asp-action="ExportComplaintsCsv" class="btn-civic-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+        </a>
+        <a asp-action="Create" class="btn-civic-primary">
+            + File Grievance
+        </a>
+    </div>
+</div>
+
+<!-- Search & Filtering Card -->
+<div class="search-filter-card">
+    <form method="get" asp-action="Index" class="row g-2 align-items-center">
+        <div class="col-md-4">
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Search by title, location, or citizen..." value="@searchQuery" />
+        </div>
+        <div class="col-md-3">
+            <select name="category" class="form-select form-select-sm">
+                <option value="">All Problem Categories</option>
+                <option value="Overflowing Bin" selected="@(activeCategory == "Overflowing Bin")">Overflowing Bin</option>
+                <option value="Blocked Drainage" selected="@(activeCategory == "Blocked Drainage")">Blocked Drainage</option>
+                <option value="Illegal Dumping" selected="@(activeCategory == "Illegal Dumping")">Illegal Dumping</option>
+                <option value="Public Restroom" selected="@(activeCategory == "Public Restroom")">Public Restroom</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="status" class="form-select form-select-sm">
+                <option value="">All Statuses</option>
+                <option value="Pending" selected="@(activeStatus == "Pending")">Pending</option>
+                <option value="In-Progress" selected="@(activeStatus == "In-Progress")">In-Progress</option>
+                <option value="Resolved" selected="@(activeStatus == "Resolved")">Resolved</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="severity" class="form-select form-select-sm">
+                <option value="">All Severities</option>
+                <option value="Low" selected="@(activeSeverity == "Low")">Low</option>
+                <option value="Medium" selected="@(activeSeverity == "Medium")">Medium</option>
+                <option value="High" selected="@(activeSeverity == "High")">High</option>
+                <option value="Critical" selected="@(activeSeverity == "Critical")">Critical</option>
+            </select>
+        </div>
+        <div class="col-md-1 d-grid">
+            <button type="submit" class="btn-civic-secondary py-1">Filter</button>
+        </div>
+    </form>
+</div>
+
+<!-- Complaints Data Table -->
+<div class="table-portal-civic">
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 60px; white-space: nowrap;">ID</th>
+                <th style="min-width: 200px;">Grievance Title & Location</th>
+                <th style="width: 140px; white-space: nowrap;">Category</th>
+                <th style="width: 100px; white-space: nowrap;">Severity</th>
+                <th style="width: 110px; white-space: nowrap;">Status</th>
+                <th style="width: 150px; white-space: nowrap;">Assigned Worker</th>
+                <th style="width: 110px; white-space: nowrap;">Date</th>
+                <th style="width: 100px; white-space: nowrap; text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center py-4 text-muted">
+                        No sanitation grievances found matching current filters.
+                    </td>
+                </tr>
+            }
+            @foreach (var item in Model)
+            {
+                string statusClass = item.Status switch
+                {
+                    "Pending" => "badge-status-pending",
+                    "In-Progress" => "badge-status-transit",
+                    _ => "badge-status-disposed"
+                };
+
+                string severityClass = item.Severity switch
+                {
+                    "Critical" or "High" => "priority-emergency",
+                    "Medium" => "priority-medium",
+                    _ => "priority-low"
+                };
+
+                <tr>
+                    <td class="fw-bold text-muted" style="white-space: nowrap;">#@item.Id</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="fw-semibold text-dark text-decoration-none d-block">
+                            @item.Title
+                        </a>
+                        <div class="small text-secondary">
+                            <span>@item.Location</span> &bull; <span class="text-muted">@item.WardZone</span>
+                        </div>
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <span class="badge bg-light text-secondary border">@item.Category</span>
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <span class="@severityClass">@item.Severity</span>
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <span class="@statusClass">@item.Status</span>
+                    </td>
+                    <td class="text-secondary small" style="white-space: nowrap;">
+                        @(item.AssignedWorker ?? "Unassigned")
+                    </td>
+                    <td class="text-secondary small" style="white-space: nowrap;">
+                        @item.ReportedDate.ToString("yyyy-MM-dd")
+                    </td>
+                    <td style="white-space: nowrap; text-align: right;">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn-table-action">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    @if (totalPages > 1)
+    {
+        <div class="pagination-portal">
+            <span class="small text-secondary">Showing page <strong>@currentPage</strong> of <strong>@totalPages</strong></span>
+            <div class="d-flex gap-1">
+                @if (currentPage > 1)
+                {
+                    <a href="@Url.Action("Index", new { page = currentPage - 1, search = searchQuery, category = activeCategory, status = activeStatus, severity = activeSeverity })" class="btn-table-action">&larr; Prev</a>
+                }
+                @for (int p = 1; p <= totalPages; p++)
+                {
+                    <a href="@Url.Action("Index", new { page = p, search = searchQuery, category = activeCategory, status = activeStatus, severity = activeSeverity })" class="btn-table-action @(p == currentPage ? "btn-civic-primary text-white" : "")">@p</a>
+                }
+                @if (currentPage < totalPages)
+                {
+                    <a href="@Url.Action("Index", new { page = currentPage + 1, search = searchQuery, category = activeCategory, status = activeStatus, severity = activeSeverity })" class="btn-table-action">Next &rarr;</a>
+                }
+            </div>
+        </div>
+    }
+</div>

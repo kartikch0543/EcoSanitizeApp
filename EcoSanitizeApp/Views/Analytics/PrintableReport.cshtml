@@ -1,0 +1,249 @@
+@model EcoSanitizeApp.Models.DashboardSummary
+@{
+    Layout = null;
+    var requests = ViewBag.Requests as List<EcoSanitizeApp.Models.DisposalRequest> ?? new();
+    var complaints = ViewBag.Complaints as List<EcoSanitizeApp.Models.SanitationComplaint> ?? new();
+    var audits = ViewBag.Audits as List<EcoSanitizeApp.Models.SanitizationAudit> ?? new();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>EcoSanitize Municipal Operations Audit Report - @DateTime.Now.ToString("yyyy-MM-dd")</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #111;
+            padding: 30px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .report-header {
+            border-bottom: 3px double #14532d;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .header-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #14532d;
+            margin: 0;
+        }
+        .header-subtitle {
+            font-size: 13px;
+            color: #555;
+            margin-top: 4px;
+        }
+        .metric-box {
+            border: 1px solid #ccc;
+            padding: 10px 14px;
+            border-radius: 4px;
+            background: #fafafa;
+        }
+        .metric-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: bold;
+        }
+        .metric-val {
+            font-size: 20px;
+            font-weight: bold;
+            color: #14532d;
+        }
+        table {
+            font-size: 12px;
+        }
+        th {
+            background-color: #f3f4f6 !important;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        .signature-section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .sig-line {
+            width: 220px;
+            border-top: 1px solid #333;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 11px;
+            color: #444;
+        }
+        @@media print {
+            .no-print { display: none !important; }
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print d-flex justify-content-between align-items-center mb-4 p-3 bg-light border rounded">
+        <div>
+            <strong>Municipal Operations Audit Document</strong> &bull; Ready for physical printout or save as PDF.
+        </div>
+        <div>
+            <button onclick="window.print()" class="btn btn-sm btn-primary">Print / Save as PDF</button>
+            <button onclick="window.close()" class="btn btn-sm btn-outline-secondary ms-2">Close</button>
+        </div>
+    </div>
+
+    <!-- Official Report Header -->
+    <div class="report-header d-flex justify-content-between align-items-end">
+        <div>
+            <h1 class="header-title">ECOSANITIZE MUNICIPAL OPERATIONS PORTAL</h1>
+            <div class="header-subtitle">Directorate of Urban Solid Waste Management & Public Sanitation Oversight</div>
+            <div class="small text-muted mt-1">Official Municipal Hygiene, Fleet Logistics, and Public Grievance Audit Report</div>
+        </div>
+        <div class="text-end small">
+            <div><strong>Report Reference:</strong> MUN-REP-@DateTime.Now.ToString("yyyyMMdd-HHmm")</div>
+            <div><strong>Generated:</strong> @DateTime.Now.ToString("dd MMMM yyyy, HH:mm")</div>
+            <div><strong>Classification:</strong> Official Municipal Record</div>
+        </div>
+    </div>
+
+    <!-- Executive Summary KPIs -->
+    <div class="row g-3 mb-4">
+        <div class="col-3">
+            <div class="metric-box">
+                <div class="metric-title">Total Waste Managed</div>
+                <div class="metric-val">@Model.TotalWeightKg kg</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="metric-box">
+                <div class="metric-title">Recyclable Diversion</div>
+                <div class="metric-val">@Model.RecyclingRatePercent%</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="metric-box">
+                <div class="metric-title">Active Collection Jobs</div>
+                <div class="metric-val">@Model.TotalRequests</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="metric-box">
+                <div class="metric-title">Citizen Grievances</div>
+                <div class="metric-val">@Model.ResolvedComplaints / @Model.TotalComplaints Resolved</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 1: Recent Waste Collection Requests -->
+    <h5 class="fw-bold mb-2">1. Waste Collection Dispatch Records</h5>
+    <table class="table table-bordered table-sm mb-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Location</th>
+                <th>Stream</th>
+                <th>Weight</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Assigned Unit</th>
+                <th>Logged At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in requests)
+            {
+                <tr>
+                    <td>#@r.Id</td>
+                    <td>@r.Location</td>
+                    <td>@r.Category</td>
+                    <td>@r.EstimatedWeightKg kg</td>
+                    <td>@r.Priority</td>
+                    <td>@r.Status</td>
+                    <td>@(r.AssignedCollector ?? "Unassigned")</td>
+                    <td>@r.RequestDate.ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Section 2: Citizen Grievances -->
+    <h5 class="fw-bold mb-2">2. Sanitation Grievance Resolution Summary</h5>
+    <table class="table table-bordered table-sm mb-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title / Incident</th>
+                <th>Category</th>
+                <th>Location & Zone</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Assigned Field Lead</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in complaints)
+            {
+                <tr>
+                    <td>#@c.Id</td>
+                    <td>@c.Title</td>
+                    <td>@c.Category</td>
+                    <td>@c.Location (@c.WardZone)</td>
+                    <td>@c.Severity</td>
+                    <td>@c.Status</td>
+                    <td>@(c.AssignedWorker ?? "Unassigned")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Section 3: Facility Sanitization Audits -->
+    <h5 class="fw-bold mb-2">3. Facility Sanitization Compliance Inspections</h5>
+    <table class="table table-bordered table-sm mb-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Inspected Area / Facility</th>
+                <th>Score</th>
+                <th>Disinfectant Chemical</th>
+                <th>Inspector</th>
+                <th>Follow-up Needed</th>
+                <th>Outcome</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in audits)
+            {
+                <tr>
+                    <td>#@a.Id</td>
+                    <td>@a.AreaName</td>
+                    <td>@a.CleanlinessScore / 5</td>
+                    <td>@a.DisinfectantUsed</td>
+                    <td>@a.InspectorName</td>
+                    <td>@(a.RequiresFollowUp ? "Action Required" : "Compliant")</td>
+                    <td>@a.ResultStatus</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Verification & Signatures -->
+    <div class="signature-section">
+        <div>
+            <div class="sig-line">
+                Municipal Sanitation Inspector<br />
+                Signature & Date Stamp
+            </div>
+        </div>
+        <div>
+            <div class="sig-line">
+                Chief Logistics Officer<br />
+                Signature & Seal
+            </div>
+        </div>
+        <div>
+            <div class="sig-line">
+                Municipal Commissioner<br />
+                Countersigned & Approved
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+@model EcoSanitizeApp.Models.SanitationWorker
+@{
+    ViewData["Title"] = "Register Sanitation Worker";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="mb-3">
+            <h1 class="h4 fw-bold mb-1">Register Sanitation Worker</h1>
+            <p class="text-secondary small">Add municipal field worker, collection truck driver, or biohazard handling specialist to the workforce roster.</p>
+        </div>
+
+        <div class="panel-civic">
+            <div class="panel-civic-header">Worker Details & Zone Assignment</div>
+            <div class="panel-civic-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="WorkerCode" class="form-label"></label>
+                            <input asp-for="WorkerCode" class="form-control" />
+                            <span asp-validation-for="WorkerCode" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FullName" class="form-label"></label>
+                            <input asp-for="FullName" class="form-control" placeholder="Full legal name" autofocus />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="+91 98XXX XXXXX" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Status" class="form-label"></label>
+                            <select asp-for="Status" class="form-select">
+                                <option value="Active">Active</option>
+                                <option value="On-Duty">On-Duty</option>
+                                <option value="On-Leave">On-Leave</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="AssignedZone" class="form-label"></label>
+                            <select asp-for="AssignedZone" class="form-select">
+                                <option value="Zone 1 - North Market">Zone 1 - North Market</option>
+                                <option value="Zone 2 - Central Commercial">Zone 2 - Central Commercial</option>
+                                <option value="Zone 3 - West Industrial">Zone 3 - West Industrial</option>
+                                <option value="Zone 4 - South Residential">Zone 4 - South Residential</option>
+                            </select>
+                            <span asp-validation-for="AssignedZone" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Specialization" class="form-label"></label>
+                            <select asp-for="Specialization" class="form-select">
+                                <option value="Waste Collection Driver">Waste Collection Driver</option>
+                                <option value="Biohazard Handler">Biohazard Handler</option>
+                                <option value="Drainage & Sewer Cleaner">Drainage & Sewer Cleaner</option>
+                                <option value="Disinfection Inspector">Disinfection Inspector</option>
+                            </select>
+                            <span asp-validation-for="Specialization" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="AssignedVehicle" class="form-label"></label>
+                        <input asp-for="AssignedVehicle" class="form-control" placeholder="e.g. Compactor Truck 04, Hazmat Unit 01, or Mini Tipper" />
+                        <span asp-validation-for="AssignedVehicle" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn-civic-secondary">Cancel and Return</a>
+                        <button type="submit" class="btn-civic-primary">Save Worker Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

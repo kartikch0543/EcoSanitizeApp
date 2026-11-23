@@ -1,0 +1,135 @@
+@model EcoSanitizeApp.Models.SanitationComplaint
+@{
+    ViewData["Title"] = $"Grievance #{Model.Id} Details";
+    var workers = ViewBag.Workers as List<EcoSanitizeApp.Models.SanitationWorker> ?? new();
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+            <div>
+                <h1 class="h4 fw-bold mb-1">Grievance Case #@Model.Id</h1>
+                <p class="text-secondary small mb-0">Reported on @Model.ReportedDate.ToString("yyyy-MM-dd HH:mm") by @Model.ReportedBy</p>
+            </div>
+            @{
+                string statusBadgeClass = Model.Status switch
+                {
+                    "Pending" => "badge-status-pending",
+                    "In-Progress" => "badge-status-transit",
+                    _ => "badge-status-disposed"
+                };
+            }
+            <span class="@statusBadgeClass">@Model.Status</span>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-8">
+                <div class="panel-civic h-100">
+                    <div class="panel-civic-header">Case Information</div>
+                    <div class="panel-civic-body">
+                        <div class="row g-3 pb-3 border-bottom mb-3">
+                            <div class="col-sm-4 text-secondary small">Title</div>
+                            <div class="col-sm-8 fw-semibold">@Model.Title</div>
+                        </div>
+                        <div class="row g-3 pb-3 border-bottom mb-3">
+                            <div class="col-sm-4 text-secondary small">Category</div>
+                            <div class="col-sm-8"><span class="badge bg-light text-dark border">@Model.Category</span></div>
+                        </div>
+                        <div class="row g-3 pb-3 border-bottom mb-3">
+                            <div class="col-sm-4 text-secondary small">Location</div>
+                            <div class="col-sm-8 fw-semibold">@Model.Location (@Model.WardZone)</div>
+                        </div>
+                        <div class="row g-3 pb-3 border-bottom mb-3">
+                            <div class="col-sm-4 text-secondary small">Severity</div>
+                            <div class="col-sm-8 fw-semibold @(Model.Severity == "Critical" || Model.Severity == "High" ? "text-danger" : "")">@Model.Severity</div>
+                        </div>
+                        <div class="row g-3 pb-3 border-bottom mb-3">
+                            <div class="col-sm-4 text-secondary small">Description</div>
+                            <div class="col-sm-8 text-secondary">@Model.Description</div>
+                        </div>
+                        <div class="row g-3 pb-3 border-bottom mb-3">
+                            <div class="col-sm-4 text-secondary small">Contact Number</div>
+                            <div class="col-sm-8">@(Model.ContactNumber ?? "Not provided")</div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-sm-4 text-secondary small">Resolution Notes</div>
+                            <div class="col-sm-8">
+                                @(string.IsNullOrWhiteSpace(Model.ResolutionNotes) ? "Pending field resolution" : Model.ResolutionNotes)
+                                @if (Model.ResolvedDate != null)
+                                {
+                                    <div class="small text-success mt-1">Resolved on @Model.ResolvedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evidence Photo Column -->
+            <div class="col-md-4">
+                <div class="panel-civic h-100">
+                    <div class="panel-civic-header">Photo Evidence</div>
+                    <div class="panel-civic-body text-center">
+                        @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                        {
+                            <img src="@Model.PhotoPath" alt="Grievance evidence" class="img-fluid rounded border mb-2" style="max-height: 240px; object-fit: cover; width: 100%;" />
+                            <div class="small text-muted">Uploaded by citizen</div>
+                        }
+                        else
+                        {
+                            <div class="p-4 bg-light rounded border text-muted small">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mb-2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <div>No photo evidence was attached with this report.</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Municipal Action & Task Assignment Form -->
+        <div class="panel-civic mb-4">
+            <div class="panel-civic-header">Municipal Dispatch & Action Update</div>
+            <div class="panel-civic-body">
+                <form asp-action="UpdateStatus" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Update Status</label>
+                            <select name="status" class="form-select">
+                                <option value="Pending" selected="@(Model.Status == "Pending")">Pending</option>
+                                <option value="In-Progress" selected="@(Model.Status == "In-Progress")">In-Progress</option>
+                                <option value="Resolved" selected="@(Model.Status == "Resolved")">Resolved</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Assign Worker</label>
+                            <select name="assignedWorker" class="form-select">
+                                <option value="">Select Field Worker</option>
+                                @foreach (var w in workers)
+                                {
+                                    <option value="@w.FullName" selected="@(Model.AssignedWorker == w.FullName)">@w.FullName (@w.Specialization - @w.AssignedZone)</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn-civic-primary w-100">Update Grievance</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="form-label">Resolution Summary / Action Notes</label>
+                        <input type="text" name="resolutionNotes" class="form-control" placeholder="e.g. Silt removed, vacuum truck dispatched, waste cleared to transfer station." value="@Model.ResolutionNotes" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index" class="btn-civic-secondary">&larr; Back to Grievance List</a>
+        </div>
+    </div>
+</div>

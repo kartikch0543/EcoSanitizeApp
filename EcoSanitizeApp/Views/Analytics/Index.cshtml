@@ -1,0 +1,230 @@
+@model EcoSanitizeApp.Models.DashboardSummary
+@{
+    ViewData["Title"] = "Analytics & Reports";
+    var streamLabels = ViewBag.StreamLabels as string[] ?? Array.Empty<string>();
+    var streamWeights = ViewBag.StreamWeights as double[] ?? Array.Empty<double>();
+    var trendDates = ViewBag.TrendDates as string[] ?? Array.Empty<string>();
+    var trendWeights = ViewBag.TrendWeights as double[] ?? Array.Empty<double>();
+    var compCatLabels = ViewBag.ComplaintCatLabels as string[] ?? Array.Empty<string>();
+    var compCatCounts = ViewBag.ComplaintCatCounts as int[] ?? Array.Empty<int>();
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h4 fw-bold mb-1">Waste Collection Analytics & Intelligence</h1>
+        <p class="text-secondary small mb-0">Daily tonnage trends, stream composition, complaint resolution rates, and municipal data exports</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="ExportDisposalCsv" class="btn-civic-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Collection CSV
+        </a>
+        <a asp-action="ExportComplaintsCsv" class="btn-civic-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Grievances CSV
+        </a>
+        <a asp-action="PrintableReport" target="_blank" class="btn-civic-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Printable Report (PDF)
+        </a>
+    </div>
+</div>
+
+<!-- 4 Top Analytics Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-md-3">
+        <div class="metric-card-civic">
+            <span class="metric-title-small">Total Waste Managed</span>
+            <div class="metric-digit-large text-success">@Model.TotalWeightKg <span class="stat-unit-text">kg</span></div>
+            <div class="small text-secondary">Active municipal logistics</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="metric-card-civic">
+            <span class="metric-title-small">Recycling Diversion</span>
+            <div class="metric-digit-large text-primary">@Model.RecyclingRatePercent <span class="stat-unit-text">%</span></div>
+            <div class="small text-secondary">@Model.RecyclableWeightKg kg diverted from landfill</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="metric-card-civic">
+            <span class="metric-title-small">Grievance Resolution</span>
+            @{
+                double compRate = Model.TotalComplaints > 0 ? Math.Round((Model.ResolvedComplaints / (double)Model.TotalComplaints) * 100.0, 1) : 100.0;
+            }
+            <div class="metric-digit-large text-info">@compRate <span class="stat-unit-text">%</span></div>
+            <div class="small text-secondary">@Model.ResolvedComplaints of @Model.TotalComplaints resolved</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="metric-card-civic">
+            <span class="metric-title-small">Hygiene Pass Rate</span>
+            @{
+                double auditRate = Model.TotalAudits > 0 ? Math.Round((Model.CompliantAuditsCount / (double)Model.TotalAudits) * 100.0, 1) : 100.0;
+            }
+            <div class="metric-digit-large @(auditRate >= 80 ? "text-success" : "text-warning")">@auditRate <span class="stat-unit-text">%</span></div>
+            <div class="small text-secondary">@Model.CompliantAuditsCount of @Model.TotalAudits passed</div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 1: 7-Day Trend + Stream Breakdown -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header d-flex justify-content-between align-items-center">
+                <span>Daily Collection Weight Trend (kg)</span>
+                <span class="badge bg-light text-secondary border">7-Day Moving Tonnage</span>
+            </div>
+            <div class="panel-civic-body">
+                <canvas id="trendChart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header">
+                <span>Segregation Stream Composition</span>
+            </div>
+            <div class="panel-civic-body d-flex flex-column align-items-center justify-content-center">
+                <div style="width: 100%; max-width: 250px;">
+                    <canvas id="streamChart" height="240"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 2: Grievance Breakdown & Summary Table -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header">
+                <span>Citizen Grievance Categories</span>
+            </div>
+            <div class="panel-civic-body">
+                <canvas id="complaintChart" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="panel-civic h-100">
+            <div class="panel-civic-header">
+                <span>Municipal Sanitation Benchmark Matrix</span>
+            </div>
+            <div class="panel-civic-body p-0">
+                <table class="table table-sm align-middle mb-0" style="font-size: 0.875rem;">
+                    <tbody>
+                        <tr>
+                            <td class="p-3 text-secondary">Active Dispatch Vehicles</td>
+                            <td class="p-3 fw-bold text-end">@Model.ActiveWorkersCount Vehicles / Teams</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 text-secondary">Scheduled Weekly Routes</td>
+                            <td class="p-3 fw-bold text-end">@Model.TotalSchedulesCount Sectors Covered</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 text-secondary">Pending Urgent Collections</td>
+                            <td class="p-3 fw-bold text-end text-danger">@Model.HighPriorityRequests Requests</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 text-secondary">Average Cleanliness Rating</td>
+                            <td class="p-3 fw-bold text-end text-success">3.7 / 5.0</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 text-secondary">Compost / Biogas Yield Potential</td>
+                            <td class="p-3 fw-bold text-end">~@Math.Round(Model.TotalWeightKg * 0.45, 1) kg Organic Input</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        // Trend Line/Bar Chart
+        const trendCtx = document.getElementById('trendChart');
+        if (trendCtx) {
+            new Chart(trendCtx, {
+                type: 'bar',
+                data: {
+                    labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(trendDates)),
+                    datasets: [{
+                        label: 'Collected Weight (kg)',
+                        data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(trendWeights)),
+                        backgroundColor: '#166534',
+                        borderColor: '#14532d',
+                        borderRadius: 4,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Kilograms (kg)' },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // Stream Doughnut Chart
+        const streamCtx = document.getElementById('streamChart');
+        if (streamCtx) {
+            new Chart(streamCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(streamLabels)),
+                    datasets: [{
+                        data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(streamWeights)),
+                        backgroundColor: ['#16a34a', '#2563eb', '#dc2626', '#d97706', '#ea580c'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // Complaint Category Chart
+        const compCtx = document.getElementById('complaintChart');
+        if (compCtx) {
+            new Chart(compCtx, {
+                type: 'bar',
+                data: {
+                    labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(compCatLabels)),
+                    datasets: [{
+                        label: 'Complaints',
+                        data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(compCatCounts)),
+                        backgroundColor: '#0284c7',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#f1f5f9' } },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+    </script>
+}

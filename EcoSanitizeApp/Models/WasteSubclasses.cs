@@ -51,4 +51,17 @@ namespace EcoSanitizeApp.Models
         public override string GetTargetFacility() => "High-Temperature Medical Incinerator";
         public override int GetHazardRating() => 7;
     }
+
+    public class ElectronicWaste : WasteItemBase
+    {
+        public ElectronicWaste(int id, string itemName, double weightKg, string originZone)
+            : base(id, itemName, weightKg, originZone)
+        {
+        }
+
+        public override string GetBinColor() => "Orange (E-Waste)";
+        public override string GetHandlingInstructions() => "Handle with care to avoid battery leakage or glass breakage. Do not dismantle components.";
+        public override string GetTargetFacility() => "Authorized E-Waste Recycling and Precious Metal Extraction Plant";
+        public override int GetHazardRating() => 5;
+    }
 }

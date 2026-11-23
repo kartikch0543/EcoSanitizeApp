@@ -4,33 +4,75 @@
     var activeCategory = ViewData["ActiveCategory"] as string ?? "";
     var activePriority = ViewData["ActivePriority"] as string ?? "";
     var activeStatus = ViewData["ActiveStatus"] as string ?? "";
+    var searchQuery = ViewData["SearchQuery"] as string ?? "";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    int totalCount = ViewBag.TotalCount ?? 0;
 }
 
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
     <div>
         <h1 class="h4 fw-bold mb-1">Disposal Tracking Queue</h1>
-        <p class="text-secondary small mb-0">Total active requests: <strong>@ViewBag.TotalCount</strong></p>
+        <p class="text-secondary small mb-0">Total active requests: <strong>@totalCount</strong> | Real-time municipal waste logistics dispatch</p>
     </div>
-    <a asp-action="Create" class="btn-civic-primary">
-        + Log Collection Request
-    </a>
+    <div class="d-flex gap-2">
+        <a asp-controller="Analytics" asp-action="ExportDisposalCsv" class="btn-civic-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+        </a>
+        <a asp-action="Create" class="btn-civic-primary">
+            + Log Collection Request
+        </a>
+    </div>
+</div>
+
+<!-- Search & Filtering Card -->
+<div class="search-filter-card">
+    <form method="get" asp-action="Index" class="row g-2 align-items-center">
+        <div class="col-md-5">
+            <input type="text" name="search" class="form-control form-control-sm" placeholder="Search by location, unit, or notes..." value="@searchQuery" />
+        </div>
+        <div class="col-md-3">
+            <select name="priority" class="form-select form-select-sm">
+                <option value="">All Priorities</option>
+                <option value="Emergency" selected="@(activePriority == "Emergency")">Emergency</option>
+                <option value="High" selected="@(activePriority == "High")">High</option>
+                <option value="Medium" selected="@(activePriority == "Medium")">Medium</option>
+                <option value="Low" selected="@(activePriority == "Low")">Low</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select form-select-sm">
+                <option value="">All Statuses</option>
+                <option value="Pending" selected="@(activeStatus == "Pending")">Pending</option>
+                <option value="In-Transit" selected="@(activeStatus == "In-Transit")">In-Transit</option>
+                <option value="Disposed" selected="@(activeStatus == "Disposed")">Disposed</option>
+            </select>
+        </div>
+        <div class="col-md-1 d-grid">
+            <button type="submit" class="btn-civic-secondary py-1">Filter</button>
+        </div>
+    </form>
 </div>
 
 <!-- Styled Horizontal Stream Filter Bar -->
 <div class="stream-filter-bar">
     <span class="small fw-semibold text-secondary me-2">Stream:</span>
-    <a href="@Url.Action("Index", "Disposal")" class="filter-tab @(string.IsNullOrEmpty(activeCategory) ? "active" : "")">All Streams</a>
-    <a href="@Url.Action("Index", "Disposal", new { category = "Organic" })" class="filter-tab @(activeCategory == "Organic" ? "active" : "")">
+    <a href="@Url.Action("Index", "Disposal", new { search = searchQuery, priority = activePriority, status = activeStatus })" class="filter-tab @(string.IsNullOrEmpty(activeCategory) ? "active" : "")">All Streams</a>
+    <a href="@Url.Action("Index", "Disposal", new { category = "Organic", search = searchQuery, priority = activePriority, status = activeStatus })" class="filter-tab @(activeCategory == "Organic" ? "active" : "")">
         <span class="stream-dot dot-organic"></span>Organic
     </a>
-    <a href="@Url.Action("Index", "Disposal", new { category = "Recyclable" })" class="filter-tab @(activeCategory == "Recyclable" ? "active" : "")">
+    <a href="@Url.Action("Index", "Disposal", new { category = "Recyclable", search = searchQuery, priority = activePriority, status = activeStatus })" class="filter-tab @(activeCategory == "Recyclable" ? "active" : "")">
         <span class="stream-dot dot-recyclable"></span>Recyclable
     </a>
-    <a href="@Url.Action("Index", "Disposal", new { category = "Hazardous" })" class="filter-tab @(activeCategory == "Hazardous" ? "active" : "")">
+    <a href="@Url.Action("Index", "Disposal", new { category = "Hazardous", search = searchQuery, priority = activePriority, status = activeStatus })" class="filter-tab @(activeCategory == "Hazardous" ? "active" : "")">
         <span class="stream-dot dot-hazardous"></span>Hazardous
     </a>
-    <a href="@Url.Action("Index", "Disposal", new { category = "Sanitary" })" class="filter-tab @(activeCategory == "Sanitary" ? "active" : "")">
+    <a href="@Url.Action("Index", "Disposal", new { category = "Sanitary", search = searchQuery, priority = activePriority, status = activeStatus })" class="filter-tab @(activeCategory == "Sanitary" ? "active" : "")">
         <span class="stream-dot dot-sanitary"></span>Sanitary
+    </a>
+    <a href="@Url.Action("Index", "Disposal", new { category = "E-Waste", search = searchQuery, priority = activePriority, status = activeStatus })" class="filter-tab @(activeCategory == "E-Waste" ? "active" : "")">
+        <span class="stream-dot dot-ewaste"></span>E-Waste
     </a>
 </div>
 
@@ -49,6 +91,14 @@
             </tr>
         </thead>
         <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center py-4 text-muted">
+                        No collection requests found matching current filters.
+                    </td>
+                </tr>
+            }
             @foreach (var item in Model)
             {
                 string dotClass = item.Category switch
@@ -57,6 +107,7 @@
                     "Recyclable" => "dot-recyclable",
                     "Hazardous" => "dot-hazardous",
                     "Sanitary" => "dot-sanitary",
+                    "E-Waste" => "dot-ewaste",
                     _ => ""
                 };
 
@@ -114,4 +165,26 @@
             }
         </tbody>
     </table>
+
+    <!-- Pagination -->
+    @if (totalPages > 1)
+    {
+        <div class="pagination-portal">
+            <span class="small text-secondary">Showing page <strong>@currentPage</strong> of <strong>@totalPages</strong></span>
+            <div class="d-flex gap-1">
+                @if (currentPage > 1)
+                {
+                    <a href="@Url.Action("Index", new { page = currentPage - 1, search = searchQuery, category = activeCategory, priority = activePriority, status = activeStatus })" class="btn-table-action">&larr; Prev</a>
+                }
+                @for (int p = 1; p <= totalPages; p++)
+                {
+                    <a href="@Url.Action("Index", new { page = p, search = searchQuery, category = activeCategory, priority = activePriority, status = activeStatus })" class="btn-table-action @(p == currentPage ? "btn-civic-primary text-white" : "")">@p</a>
+                }
+                @if (currentPage < totalPages)
+                {
+                    <a href="@Url.Action("Index", new { page = currentPage + 1, search = searchQuery, category = activeCategory, priority = activePriority, status = activeStatus })" class="btn-table-action">Next &rarr;</a>
+                }
+            </div>
+        </div>
+    }
 </div>

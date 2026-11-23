@@ -1,0 +1,108 @@
+@model EcoSanitizeApp.Models.CollectionSchedule
+@{
+    ViewData["Title"] = "Add Collection Timetable";
+    var workers = ViewBag.Workers as List<EcoSanitizeApp.Models.SanitationWorker> ?? new();
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="mb-3">
+            <h1 class="h4 fw-bold mb-1">Add Collection Timetable</h1>
+            <p class="text-secondary small">Establish a recurring collection route, time slot, and assigned vehicle for a municipal sector.</p>
+        </div>
+
+        <div class="panel-civic">
+            <div class="panel-civic-header">Route Schedule Configuration</div>
+            <div class="panel-civic-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="WardZone" class="form-label"></label>
+                            <select asp-for="WardZone" class="form-select">
+                                <option value="Zone 1 - North Market">Zone 1 - North Market</option>
+                                <option value="Zone 2 - Central Commercial">Zone 2 - Central Commercial</option>
+                                <option value="Zone 3 - West Industrial">Zone 3 - West Industrial</option>
+                                <option value="Zone 4 - South Residential">Zone 4 - South Residential</option>
+                            </select>
+                            <span asp-validation-for="WardZone" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CollectionDay" class="form-label"></label>
+                            <select asp-for="CollectionDay" class="form-select">
+                                <option value="Daily">Daily</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                            <span asp-validation-for="CollectionDay" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="TimeSlot" class="form-label"></label>
+                            <select asp-for="TimeSlot" class="form-select">
+                                <option value="06:00 - 09:00">06:00 - 09:00 (Early Morning)</option>
+                                <option value="09:00 - 12:00">09:00 - 12:00 (Mid-Day Commercial)</option>
+                                <option value="14:00 - 17:00">14:00 - 17:00 (Afternoon Industrial)</option>
+                                <option value="20:00 - 23:00">20:00 - 23:00 (Night Market)</option>
+                            </select>
+                            <span asp-validation-for="TimeSlot" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="WasteStream" class="form-label"></label>
+                            <select asp-for="WasteStream" class="form-select">
+                                <option value="Organic">Organic (Green Stream)</option>
+                                <option value="Recyclable">Recyclable (Blue Stream)</option>
+                                <option value="Hazardous">Hazardous (Red Stream)</option>
+                                <option value="Sanitary">Sanitary (Yellow Stream)</option>
+                                <option value="E-Waste">E-Waste (Orange Stream)</option>
+                            </select>
+                            <span asp-validation-for="WasteStream" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="AssignedVehicle" class="form-label"></label>
+                            <input asp-for="AssignedVehicle" class="form-control" placeholder="e.g. Compactor Truck 02" />
+                            <span asp-validation-for="AssignedVehicle" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="AssignedWorker" class="form-label"></label>
+                            <select asp-for="AssignedWorker" class="form-select">
+                                <option value="">Select Field Lead</option>
+                                @foreach (var w in workers)
+                                {
+                                    <option value="@w.FullName">@w.FullName (@w.Specialization)</option>
+                                }
+                            </select>
+                            <span asp-validation-for="AssignedWorker" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="RouteDescription" class="form-label"></label>
+                        <input asp-for="RouteDescription" class="form-control" placeholder="e.g. Main boulevard, wholesale shops, and food street dumpsters" />
+                        <span asp-validation-for="RouteDescription" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn-civic-secondary">Cancel and Return</a>
+                        <button type="submit" class="btn-civic-primary">Save Schedule</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
