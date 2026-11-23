@@ -223,15 +223,18 @@
     </main>
 
     <!-- Clean Municipal Footer -->
-    <footer class="civic-portal-footer mt-auto py-3">
-        <div class="container-fluid px-3 px-lg-5 d-flex flex-wrap justify-content-between align-items-center">
-            <div class="footer-meta">
-                &copy; 2026 EcoSanitize Municipal Waste Management &amp; Sanitization Portal. All rights reserved.
+    <footer class="civic-portal-footer mt-auto">
+        <div class="container-fluid civic-footer-container px-3 px-lg-4 d-flex flex-wrap justify-content-between align-items-center py-3">
+            <div class="footer-meta d-flex align-items-center gap-2">
+                <span class="footer-brand-tag">EcoSanitize Portal</span>
+                <span class="footer-copyright">&copy; 2026 EcoSanitize Municipal Waste Management &amp; Sanitization System. All rights reserved.</span>
             </div>
-            <div class="footer-links">
-                <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
-                <a asp-controller="Home" asp-action="Terms">Terms and Conditions</a>
-                <a asp-controller="Analytics" asp-action="PrintableReport" target="_blank">Printable Audit Report</a>
+            <div class="footer-links d-flex flex-wrap align-items-center">
+                <a asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy Policy</a>
+                <span class="footer-separator" aria-hidden="true">&bull;</span>
+                <a asp-controller="Home" asp-action="Terms" class="footer-link">Terms and Conditions</a>
+                <span class="footer-separator" aria-hidden="true">&bull;</span>
+                <a asp-controller="Analytics" asp-action="PrintableReport" target="_blank" class="footer-link">Printable Audit Report</a>
             </div>
         </div>
     </footer>

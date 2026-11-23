@@ -877,6 +877,74 @@ body.civic-portal-body {
 }
 
 /* =========================================================================
+   MUNICIPAL ENTERPRISE FOOTER
+   ========================================================================= */
+.civic-portal-footer {
+    background-color: #ffffff;
+    border-top: 1px solid var(--border-color);
+    width: 100%;
+    margin-top: auto;
+    font-size: 0.8125rem;
+    color: #64748b;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.civic-footer-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.footer-meta {
+    font-size: 0.8125rem;
+    color: #64748b;
+}
+
+.footer-brand-tag {
+    display: inline-block;
+    padding: 0.15rem 0.45rem;
+    background-color: var(--primary-green-light);
+    color: var(--primary-green);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.footer-copyright {
+    color: #64748b;
+    font-weight: 400;
+}
+
+.footer-links {
+    gap: 0.25rem;
+}
+
+.footer-link {
+    color: #475569;
+    text-decoration: none;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.footer-link:hover,
+.footer-link:focus {
+    color: var(--primary-green);
+    background-color: #f1f5f9;
+    text-decoration: none;
+}
+
+.footer-separator {
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    user-select: none;
+    margin: 0 0.15rem;
+}
+
+/* =========================================================================
    PRINTABLE STYLES FOR PDF AUDIT REPORTS
    ========================================================================= */
 @media print {
