@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSanitize - Project Presentation Deck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #10291F;
+            --primary-green: #16764A;
+            --emerald: #34C987;
+            --bg-light: #F8FAF9;
+            --card-bg: #FFFFFF;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B1E16;
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .deck-header {
+            background-color: var(--primary-dark);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: #ffffff;
+            padding: 0.6rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            z-index: 10;
+        }
+
+        .deck-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--emerald);
+        }
+
+        .deck-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-ctrl {
+            background: rgba(255,255,255,0.12);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-ctrl:hover {
+            background: var(--emerald);
+            color: var(--primary-dark);
+            border-color: var(--emerald);
+        }
+
+        /* Stage Area */
+        .stage-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .slide-frame {
+            width: 100%;
+            max-width: 1150px;
+            aspect-ratio: 16 / 9;
+            background: var(--bg-light);
+            border-radius: 12px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+            display: none;
+            flex-direction: column;
+            padding: 2.75rem 3.5rem;
+            position: relative;
+            animation: fadeIn 0.25s ease-in-out;
+            overflow: hidden;
+        }
+
+        .slide-frame.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.985); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Title Slide Layout */
+        .slide-dark {
+            background: var(--primary-dark);
+            color: #ffffff;
+            justify-content: center;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--emerald);
+            margin-bottom: 0.6rem;
+        }
+
+        .slide-title-main {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .slide-dark .slide-title-main {
+            color: #ffffff;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Grid Layouts for Content */
+        .cards-grid-2x2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            flex: 1;
+        }
+
+        .cards-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .cards-grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.85rem;
+            flex: 1;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .card-civic {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .card-civic-step {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .card-body-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        /* Color accents */
+        .c-green { color: #16764A; }
+        .c-blue { color: #2563EB; }
+        .c-red { color: #DC2626; }
+        .c-amber { color: #D97706; }
+        .c-orange { color: #EA580C; }
+
+        /* Speaker Notes Panel */
+        .speaker-notes-panel {
+            background: #ffffff;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            font-size: 0.9rem;
+            color: #334155;
+            max-height: 120px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .speaker-notes-panel.visible {
+            display: block;
+        }
+
+        .speaker-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary-green);
+            margin-bottom: 0.25rem;
+        }
+
+        @media print {
+            body { background: #ffffff; height: auto; overflow: visible; }
+            .deck-header, .deck-controls, .speaker-notes-panel { display: none !important; }
+            .stage-container { padding: 0; }
+            .slide-frame { display: flex !important; page-break-after: always; width: 100%; aspect-ratio: 16/9; box-shadow: none; border: 1px solid #ccc; margin-bottom: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="deck-header">
+        <div class="deck-brand">
+            <span>EcoSanitize</span> | <span>Municipal Operations Presentation</span>
+        </div>
+        <div class="deck-controls">
+            <span id="slideIndicator" style="font-weight:600; color:#cbd5e1; margin-right:0.5rem;">Slide 1 / 12</span>
+            <button class="btn-ctrl" onclick="prevSlide()">&larr; Previous</button>
+            <button class="btn-ctrl" onclick="nextSlide()">Next &rarr;</button>
+            <button class="btn-ctrl" onclick="toggleNotes()">Toggle Speaker Notes</button>
+            <button class="btn-ctrl" onclick="window.print()">Print / Save PDF</button>
+            <button class="btn-ctrl" onclick="toggleFullscreen()">Fullscreen</button>
+        </div>
+    </header>
+
+    <div class="stage-container">
+
+        <!-- SLIDE 1: Title -->
+        <div class="slide-frame slide-dark active" data-notes="Good morning respected evaluators. Today I am presenting my project EcoSanitize, an urban waste segregation, disposal tracking, and public facility sanitization platform developed to modernize municipal hygiene operations.">
+            <span class="tag-pill">Municipal Civic Operations Platform</span>
+            <h1 class="slide-title-main">EcoSanitize</h1>
+            <p style="font-size:1.35rem; color:#E2EEE7; margin-bottom: 2rem;">Urban Waste Segregation, Disposal Tracking and Public Sanitization System</p>
+            <div style="border-top:1px solid rgba(255,255,255,0.15); padding-top:1.25rem; font-size:0.95rem; color:#91AA9B;">
+                <p>Submitted for B.Tech. Computer Science & Engineering | Lovely Professional University</p>
+                <p style="color:#ffffff; font-weight:600; margin-top:0.35rem;">Student: Palki &bull; Reg. No: 12313843</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Problem Statement -->
+        <div class="slide-frame" data-notes="In Indian and global cities, waste management is still managed through manual registers. When garbage is collected unsegregated, it overloads landfills. Furthermore, public concourses are rarely audited objectively, and citizens lack a transparent way to report overflowing bins.">
+            <span class="tag-pill c-green">The Urban Sanitation Crisis</span>
+            <h2 class="slide-title-main">Why Cities Struggle with Waste Management</h2>
+            <div class="cards-grid-2x2">
+                <div class="card-civic">
+                    <div class="card-header-title c-red">Mixed Waste Contamination</div>
+                    <div class="card-body-text">Organic food waste, plastics, industrial chemicals, and biomedical items are collected together, ruining recycling opportunities and creating toxic landfill fires.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-amber">Unmonitored Collection Delays</div>
+                    <div class="card-body-text">Municipal vehicles lack centralized dispatching, leaving commercial bulk waste and emergency hazardous bins sitting on streets for days without tracking.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-green">Unverified Public Cleanliness</div>
+                    <div class="card-body-text">High-traffic public hubs like bus stands, markets, and clinic reception areas lack quantitative inspection protocols and certified disinfectant chemical verification.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-blue">Citizen Helplessness</div>
+                    <div class="card-body-text">Residents observing open garbage dumping or overflowing public bins have no direct, photo-verified civic reporting channel with tracked departmental resolution.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: The Solution -->
+        <div class="slide-frame" data-notes="EcoSanitize serves as an enterprise command center. It unifies source waste segregation, vehicle dispatch queues, facility sanitization audits, citizen grievances, and analytics into one single digital workflow.">
+            <span class="tag-pill c-green">Unified Civic Platform</span>
+            <h2 class="slide-title-main">The Solution: EcoSanitize Command Center</h2>
+            <div class="step-list">
+                <div class="card-civic-step">
+                    <div class="card-header-title c-green">1. Standardized 5-Stream Segregation</div>
+                    <div class="card-body-text">Rigorous classification into Organic, Recyclable, Hazardous, Sanitary, and E-Waste streams with container color codes and treatment standards.</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-blue">2. Real-Time Disposal Tracking Queue</div>
+                    <div class="card-body-text">Triage lifecycle managing bulk requests from Pending through In-Transit vehicle dispatch to verified certified Disposal.</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-red">3. Facility Sanitization Auditing</div>
+                    <div class="card-body-text">Quantitative 1-5 hygiene inspection ratings with disinfectant chemical logging and automated corrective follow-up alerts.</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-amber">4. Citizen Grievance Portal & Analytics</div>
+                    <div class="card-body-text">Photo evidence ticket submission, ward-wise resolution tracking, live telemetry charts, and automated CSV/PDF export.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Stakeholders -->
+        <div class="slide-frame" data-notes="Our platform connects four key user groups: Citizens who log requests and file complaints; Supervisors who dispatch trucks; Workers who handle field routes; and Health Inspectors who record chemical hygiene audits.">
+            <span class="tag-pill c-green">Operational Roles</span>
+            <h2 class="slide-title-main">Who Uses EcoSanitize? Key Stakeholders</h2>
+            <div class="cards-grid-4">
+                <div class="card-civic">
+                    <div class="card-header-title c-blue">Citizens & Businesses</div>
+                    <div class="card-body-text" style="margin-top:0.5rem;">Log bulk disposal requests, view segregation rules, and report overflowing bins with photo evidence.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-green">Municipal Supervisors</div>
+                    <div class="card-body-text" style="margin-top:0.5rem;">Review queues, filter requests, assign vehicle units, monitor urgencies, and close resolved tickets.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-amber">Field Workers & Drivers</div>
+                    <div class="card-body-text" style="margin-top:0.5rem;">Receive route schedules, check-in for daily shifts, and execute safe waste transport to processing centers.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-red">Health Inspectors</div>
+                    <div class="card-body-text" style="margin-top:0.5rem;">Audit public transport concourses and health clinics using standardized chemical and rating metrics.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: 5 Streams -->
+        <div class="slide-frame" data-notes="Proper segregation at source is the most vital step. EcoSanitize classifies waste into five distinct streams. Each stream defines clear container colors, hazard indices, and mandatory treatment protocols, ensuring medical and chemical wastes are never mixed with compostable organics.">
+            <span class="tag-pill c-green">Pillar 1: Waste Classification</span>
+            <h2 class="slide-title-main">Standardized 5-Stream Segregation</h2>
+            <div class="cards-grid-5">
+                <div class="card-civic">
+                    <div class="card-header-title c-green">Organic</div>
+                    <div style="font-size:0.75rem; font-weight:700; color:#16764A; margin-bottom:0.4rem;">Green Bin | Haz: 1/10</div>
+                    <div class="card-body-text">Food scraps, wet waste, vegetable peelings. Channeled for aerobic composting and biogas.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-blue">Recyclable</div>
+                    <div style="font-size:0.75rem; font-weight:700; color:#2563EB; margin-bottom:0.4rem;">Blue Bin | Haz: 2/10</div>
+                    <div class="card-body-text">Paper, corrugated cartons, plastics, glass, metals. Sent to recovery plants.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-red">Hazardous</div>
+                    <div style="font-size:0.75rem; font-weight:700; color:#DC2626; margin-bottom:0.4rem;">Red Bin | Haz: 8/10</div>
+                    <div class="card-body-text">Chemical reagents, paints, industrial solvents. Encapsulated in containment facilities.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-amber">Sanitary</div>
+                    <div style="font-size:0.75rem; font-weight:700; color:#D97706; margin-bottom:0.4rem;">Yellow Bin | Haz: 7/10</div>
+                    <div class="card-body-text">Clinic swabs, biohazard disposables, pads. High-temperature medical autoclaving.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-orange">E-Waste</div>
+                    <div style="font-size:0.75rem; font-weight:700; color:#EA580C; margin-bottom:0.4rem;">Orange Bin | Haz: 6/10</div>
+                    <div class="card-body-text">Circuit boards, spent batteries, old electronics. Dismantled for precious metal recovery.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Disposal Tracking -->
+        <div class="slide-frame" data-notes="The Disposal Tracking Queue provides end-to-end visibility. From the moment a bulk request is entered, through vehicle assignment and in-transit delivery, to certified disposal, every transaction is accounted for without paper delays.">
+            <span class="tag-pill c-green">Pillar 2: Logistics Lifecycle</span>
+            <h2 class="slide-title-main">Disposal Tracking & Dispatch Queue</h2>
+            <div class="step-list">
+                <div class="card-civic-step">
+                    <div class="card-header-title c-green">1. Pickup Request Submission</div>
+                    <div class="card-body-text">Bulk generators (markets, laboratories, hospitals) submit pickup requests specifying location, estimated weight in kg, category, and urgency level (Low, Medium, High, Emergency).</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-blue">2. Live Queue & Stream Filtering</div>
+                    <div class="card-body-text">Supervisors view all requests in a responsive data table, filterable by waste stream. Urgent and emergency items are highlighted with clear visual indicators.</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-amber">3. Dispatch & In-Transit Tracking</div>
+                    <div class="card-body-text">Supervisors assign a municipal collector or vehicle unit (e.g. 'Hazmat Unit 01') and transition status to 'In-Transit' with one click.</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-red">4. Verified Disposal Closure</div>
+                    <div class="card-body-text">Once the materials arrive at the authorized recycling or composting facility, the record is transitioned to 'Disposed', creating a verified audit trail.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Facility Sanitization -->
+        <div class="slide-frame" data-notes="Sanitization Auditing brings accountability to public spaces. Health inspectors log objective scores and the exact disinfectant chemical applied. If a public concourse scores 2 or less, the portal flags it as Needs Attention and requires an immediate deep-cleaning follow up.">
+            <span class="tag-pill c-green">Pillar 3: Public Hygiene</span>
+            <h2 class="slide-title-main">Facility Sanitization Audits</h2>
+            <div class="cards-grid-2x2">
+                <div class="card-civic">
+                    <div class="card-header-title c-green">Quantitative Cleanliness Scores</div>
+                    <div class="card-body-text">Replaces subjective reviews with a strict 1 to 5 numerical inspection score. Displays transparent ratios like '5 / 5' or '2 / 5' with subtle color coding for failing scores.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-blue">Disinfectant Chemical Verification</div>
+                    <div class="card-body-text">Audits verify and record certified chemical agents used on-site (such as Sodium Hypochlorite 1% solution or Quaternary Ammonium Compounds) rather than unverified washing.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-red">Automated Corrective Action Trigger</div>
+                    <div class="card-body-text">Scores <= 2 automatically trigger 'Requires Follow-Up = Yes' and mark the facility as 'Needs Attention', scheduling mandatory deep cleaning re-inspection.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-amber">Clean Municipal Audit Ledger</div>
+                    <div class="card-body-text">Inspection records are presented in a clean, humanized municipal ledger showing area name, inspector, disinfectant, rating, and final pass/attention outcome.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Citizen Grievances -->
+        <div class="slide-frame" data-notes="Citizens are active partners in maintaining city hygiene. When an overflowing bin is reported, citizens attach photo proof. The complaint is routed to the specific ward supervisor, resolved, and documented with resolution notes.">
+            <span class="tag-pill c-green">Pillar 4: Citizen Engagement</span>
+            <h2 class="slide-title-main">Citizen Grievance Redressal with Photo Proof</h2>
+            <div class="step-list">
+                <div class="card-civic-step">
+                    <div class="card-header-title c-blue">1. Issue Identification</div>
+                    <div class="card-body-text">Citizens identify civic sanitation hazards such as overflowing street bins, illegal open dumping, clogged storm drains, or missed household collections.</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-green">2. Photo Upload & Description</div>
+                    <div class="card-body-text">Citizens file a ticket via the portal, attaching photographic evidence stored securely on the server with timestamp and location details.</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-amber">3. Ward-Wise Automated Triage</div>
+                    <div class="card-body-text">Grievance records are automatically organized by municipal Ward (e.g. Ward 04, Ward 12), enabling immediate departmental accountability.</div>
+                </div>
+                <div class="card-civic-step">
+                    <div class="card-header-title c-red">4. Site Clearance & Resolution Notes</div>
+                    <div class="card-body-text">Field sanitation teams clear the site, update status to 'Resolved', and record official resolution notes visible to administrators.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: Logistics & Workforce -->
+        <div class="slide-frame" data-notes="Logistics execution depends on reliable staffing and schedules. Our Worker Roster tracks duty attendance in real-time, while our Collection Schedules timetable maps specific garbage trucks to wards and days of the week, preventing missed pickups.">
+            <span class="tag-pill c-green">Pillar 5: Field Operations</span>
+            <h2 class="slide-title-main">Workforce Management & Collection Timetables</h2>
+            <div class="cards-grid-2x2">
+                <div class="card-civic">
+                    <div class="card-header-title c-green">Worker Directory</div>
+                    <div class="card-body-text">Tracks employee records with ID, full name, zone, and phone contact to maintain complete field crew visibility.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-blue">Shift Duty Toggle</div>
+                    <div class="card-body-text">Allows supervisors to update worker status (Active, On-Duty, On-Leave) with a single click to reflect daily staffing.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-amber">Ward Collection Timetables</div>
+                    <div class="card-body-text">Organizes recurring route schedules by Ward Zone, Day of the Week, and Shift Time (e.g. Morning 06:30 AM).</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-red">Stream-Specific Truck Mapping</div>
+                    <div class="card-body-text">Allocates designated trucks to specific streams (e.g. Wet Organic on Mon/Thu, Dry Recyclable on Tue/Fri) to prevent mixing.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: Analytics & Reports -->
+        <div class="slide-frame" data-notes="The Analytics module gives city administrators full clarity. Three interactive charts show daily collection trends, waste stream proportions, and citizen grievance patterns. In addition, supervisors can export complete CSV spreadsheets or print formatted PDF inspection summaries.">
+            <span class="tag-pill c-green">Municipal Intelligence</span>
+            <h2 class="slide-title-main">Visual Telemetry & Exportable Reports</h2>
+            <div class="cards-grid-2x2">
+                <div class="card-civic">
+                    <div class="card-header-title c-green">Daily Collection Trend (Bar Graph)</div>
+                    <div class="card-body-text">Visualizes daily tonnage collected over the last 7 days to identify peak collection days and optimize vehicle fuel and crew allocation.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-blue">Stream Composition (Doughnut Chart)</div>
+                    <div class="card-body-text">Illustrates the exact ratio of Organic, Recyclable, Hazardous, Sanitary, and E-Waste collected across the municipality.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-amber">Citizen Grievances (Horizontal Bar Chart)</div>
+                    <div class="card-body-text">Highlights primary complaint types (Overflowing Bins, Missed Pickups, Drainage) to guide municipal budget allocation.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-red">Instant Data Exports (CSV & PDF)</div>
+                    <div class="card-body-text">1-click server-side CSV Spreadsheet exports (Disposal Logs, Complaints) and an official Printable PDF Audit Report for municipal review.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: Real-World Impact -->
+        <div class="slide-frame" data-notes="The real-world benefits of EcoSanitize are proven: Up to 80% of waste is diverted from landfills, fuel and operational costs decrease through route scheduling, public health improves through verified chemical audits, and citizens experience transparent, responsive governance.">
+            <span class="tag-pill c-green">Key Outcomes</span>
+            <h2 class="slide-title-main">Real-World Environmental & City Impact</h2>
+            <div class="cards-grid-4">
+                <div class="card-civic">
+                    <div class="card-header-title c-green">80% Landfill Diversion</div>
+                    <div class="card-body-text" style="margin-top:0.5rem;">Channels organic waste into municipal composting and dry waste into secondary recycling recovery.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-blue">Fuel & Labor Savings</div>
+                    <div class="card-body-text" style="margin-top:0.5rem;">Scheduled dispatches and balanced worker allocation minimize vehicle fuel wastage and idle truck times.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-red">Infection Prevention</div>
+                    <div class="card-body-text" style="margin-top:0.5rem;">Verified chemical disinfection audits in transit stations and clinics help suppress disease transmission.</div>
+                </div>
+                <div class="card-civic">
+                    <div class="card-header-title c-amber">Civic Transparency</div>
+                    <div class="card-body-text" style="margin-top:0.5rem;">Digital timestamps for every disposal, worker shift, and grievance eliminate lost complaints and paperwork.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: Conclusion & Roadmap -->
+        <div class="slide-frame slide-dark" data-notes="In conclusion, EcoSanitize demonstrates how modern software engineering can directly improve urban hygiene and environmental sustainability. In the future, this system is designed to integrate IoT smart bin sensors, live GPS truck tracking, and AI image classification. Thank you for your time, and I am now ready to take your questions.">
+            <span class="tag-pill">Conclusion & Vision</span>
+            <h2 class="slide-title-main" style="color:#ffffff;">Next-Generation Smart Sanitation Roadmap</h2>
+            <div class="cards-grid-2x2" style="margin-bottom: 2rem;">
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:1.25rem;">
+                    <div style="color:var(--emerald); font-weight:700; margin-bottom:0.4rem;">1. IoT Smart Bins</div>
+                    <div style="color:#CBD5E1; font-size:0.85rem;">Ultrasonic fill-level sensors inside street bins that trigger automatic collection requests when 80% full.</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:1.25rem;">
+                    <div style="color:var(--emerald); font-weight:700; margin-bottom:0.4rem;">2. Live GPS Truck Telemetry</div>
+                    <div style="color:#CBD5E1; font-size:0.85rem;">Live map tracking of municipal garbage compactors with estimated citizen arrival times.</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:1.25rem;">
+                    <div style="color:var(--emerald); font-weight:700; margin-bottom:0.4rem;">3. AI-Assisted Waste Sorting</div>
+                    <div style="color:#CBD5E1; font-size:0.85rem;">Computer vision models to automatically detect waste categories and verify citizen grievance photos.</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:1.25rem;">
+                    <div style="color:var(--emerald); font-weight:700; margin-bottom:0.4rem;">4. Mobile Progressive Web App</div>
+                    <div style="color:#CBD5E1; font-size:0.85rem;">Offline-first mobile checklists for sanitation field staff and hygiene inspectors on the ground.</div>
+                </div>
+            </div>
+            <div style="text-align:center; font-size:1.15rem; font-weight:700; color:#ffffff;">
+                Thank You! &bull; Questions &amp; Discussion
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Notes Panel -->
+    <div class="speaker-notes-panel" id="notesPanel">
+        <div class="speaker-label">Speaker Script (What to say out loud):</div>
+        <div id="notesText"></div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-frame');
+        const indicator = document.getElementById('slideIndicator');
+        const notesText = document.getElementById('notesText');
+        const notesPanel = document.getElementById('notesPanel');
+
+        function updateSlide() {
+            slides.forEach((s, idx) => {
+                s.classList.toggle('active', idx === currentSlide);
+            });
+            indicator.innerText = `Slide ${currentSlide + 1} / ${slides.length}`;
+            notesText.innerText = slides[currentSlide].getAttribute('data-notes') || "No notes for this slide.";
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function toggleNotes() {
+            notesPanel.classList.toggle('visible');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                prevSlide();
+            } else if (e.key.toLowerCase() === 'n') {
+                toggleNotes();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

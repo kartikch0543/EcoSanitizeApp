@@ -4,8 +4,8 @@ namespace EcoSanitizeApp.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Username is required.")]
-        [Display(Name = "Username")]
+        [Required(ErrorMessage = "Username or email is required.")]
+        [Display(Name = "Username or Email")]
         public string Username { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Password is required.")]
@@ -26,11 +26,13 @@ namespace EcoSanitizeApp.Models
 
         [Required(ErrorMessage = "Username is required.")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 30 characters.")]
+        [RegularExpression(@"^[a-zA-Z0-9_.-]+$", ErrorMessage = "Username can only contain letters, numbers, dots, and underscores.")]
         [Display(Name = "Username")]
         public string Username { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Email address is required.")]
         [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Please enter a valid email format (e.g. user@domain.com).")]
         [Display(Name = "Email Address")]
         public string Email { get; set; } = string.Empty;
 

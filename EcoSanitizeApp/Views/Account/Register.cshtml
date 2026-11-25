@@ -38,9 +38,9 @@
                         <select asp-for="Role" class="form-select">
                             <option value="Citizen / Facility Operator">Citizen / Facility Operator</option>
                             <option value="Sanitation Officer">Sanitation Officer</option>
-                            <option value="System Administrator">System Administrator</option>
                         </select>
                         <span asp-validation-for="Role" class="text-danger small"></span>
+                        <div class="form-text small text-muted">Note: Administrator role is restricted to the central system authority.</div>
                     </div>
 
                     <div class="row g-2 mb-4">
